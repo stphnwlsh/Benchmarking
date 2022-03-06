@@ -3,6 +3,7 @@ namespace Benchmarking
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
 
@@ -91,36 +92,6 @@ namespace Benchmarking
         }
 
         [Benchmark]
-        public int ForEachEnumerableMethod()
-        {
-            var i = 0;
-
-            var ones = this.zero.Ones.Values.AsEnumerable();
-
-            foreach (var one in ones)
-            {
-                var twos = this.zero.Ones.Values.AsEnumerable();
-
-                foreach (var two in twos)
-                {
-                    var threes = this.zero.Ones.Values.AsEnumerable();
-
-                    foreach (var three in threes)
-                    {
-                        var strings = this.zero.Ones.Values.AsEnumerable();
-
-                        foreach (var value in strings)
-                        {
-                            i++;
-                        }
-                    }
-                }
-            }
-
-            return i;
-        }
-
-        [Benchmark]
         public int ForEachArrayMethod()
         {
             var i = 0;
@@ -138,36 +109,6 @@ namespace Benchmarking
                     foreach (var three in threes)
                     {
                         var strings = this.zero.Ones.Values.ToArray();
-
-                        foreach (var value in strings)
-                        {
-                            i++;
-                        }
-                    }
-                }
-            }
-
-            return i;
-        }
-
-        [Benchmark]
-        public int ForEachHashsetMethod()
-        {
-            var i = 0;
-
-            var ones = this.zero.Ones.Values.ToHashSet();
-
-            foreach (var one in ones)
-            {
-                var twos = this.zero.Ones.Values.ToHashSet();
-
-                foreach (var two in twos)
-                {
-                    var threes = this.zero.Ones.Values.ToHashSet();
-
-                    foreach (var three in threes)
-                    {
-                        var strings = this.zero.Ones.Values.ToHashSet();
 
                         foreach (var value in strings)
                         {
@@ -201,6 +142,51 @@ namespace Benchmarking
 
             return i;
         }
+
+        [Benchmark]
+        public int StaticTypedForEachMethod()
+        {
+            var i = 0;
+
+            foreach (One one in this.zero.Ones.Values)
+            {
+                foreach (Two two in one.Twos.Values)
+                {
+                    foreach (Three three in two.Threes.Values)
+                    {
+                        foreach (string value in three.Strings.Values)
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return i;
+        }
+
+        [Benchmark]
+        public int ParallelForEachMethod()
+        {
+            var i = 0;
+
+            Parallel.ForEach(this.zero.Ones.Values, one =>
+            {
+                Parallel.ForEach(one.Twos.Values, two =>
+                {
+                    Parallel.ForEach(two.Threes.Values, three =>
+                    {
+                        Parallel.ForEach(three.Strings.Values, value =>
+                        {
+                            i++;
+                        });
+                    });
+                });
+            });
+
+            return i;
+        }
+
 
         //[Benchmark]
         //public int WhileMethod()
