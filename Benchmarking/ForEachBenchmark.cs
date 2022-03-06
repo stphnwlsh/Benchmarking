@@ -1,146 +1,172 @@
-namespace Benchmarking;
-
-using BenchmarkDotNet.Attributes;
-
-[RPlotExporter]
-public class ForEachBenchmark
+namespace Benchmarking
 {
-    private Zero zero;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using BenchmarkDotNet.Attributes;
 
-    [GlobalSetup]
-    public void GlobalSetup()
+    [RPlotExporter]
+    public class ForEachBenchmark
     {
-        var zero = new Zero
-        {
-            Id = new Guid()
-        };
+        private Zero zero;
 
-        for (var a = 0; a <= 10; a++)
+        [GlobalSetup]
+        public void GlobalSetup()
         {
-            var one = new One
+            var zero = new Zero
             {
                 Id = Guid.NewGuid()
             };
 
-            for (var b = 0; b <= 10; b++)
+            for (var a = 0; a <= 10; a++)
             {
-                var two = new Two
+                var one = new One
                 {
                     Id = Guid.NewGuid()
                 };
 
-                for (var c = 0; c <= 10; c++)
+                for (var b = 0; b <= 10; b++)
                 {
-                    var three = new Three
+                    var two = new Two
                     {
                         Id = Guid.NewGuid()
                     };
 
-                    for (var d = 0; d <= 10; d++)
+                    for (var c = 0; c <= 10; c++)
                     {
-                        three.Strings.Add(Guid.NewGuid(), $"StringValue{a}-{b}-{c}-{d}");
+                        var three = new Three
+                        {
+                            Id = Guid.NewGuid()
+                        };
+
+                        for (var d = 0; d <= 10; d++)
+                        {
+                            three.Strings.Add(Guid.NewGuid(), $"StringValue{a}-{b}-{c}-{d}");
+                        }
+
+                        two.Threes.Add(Guid.NewGuid(), three);
                     }
 
-                    two.Threes.Add(Guid.NewGuid(), three);
+                    one.Twos.Add(Guid.NewGuid(), two);
                 }
 
-                one.Twos.Add(Guid.NewGuid(), two);
+                zero.Ones.Add(Guid.NewGuid(), one);
             }
 
-            zero.Ones.Add(Guid.NewGuid(), one);
+            this.zero = zero;
         }
 
-        this.zero = zero;
-    }
-
-    [Benchmark]
-    public int ForMethod()
-    {
-        var i = 0;
-
-        var ones = this.zero.Ones.Values.ToArray();
-
-        for (var a = 0; a < ones.Length - 1; a++)
+        [Benchmark]
+        public int ForMethod()
         {
-            var twos = ones[a].Twos.Values.ToArray();
+            var i = 0;
 
-            for (var b = 0; b < twos.Length - 1; b++)
+            var ones = this.zero.Ones.Values.ToArray();
+
+            for (var a = 0; a < ones.Length - 1; a++)
             {
-                var threes = twos[b].Threes.Values.ToArray();
+                var twos = ones[a].Twos.Values.ToArray();
 
-                for (var c = 0; c < threes.Length - 1; c++)
+                for (var b = 0; b < twos.Length - 1; b++)
                 {
-                    var strings = threes[c].Strings.Values.ToArray();
+                    var threes = twos[b].Threes.Values.ToArray();
 
-                    for (var d = 0; d < strings.Length - 1; d++)
+                    for (var c = 0; c < threes.Length - 1; c++)
                     {
-                        i++;
+                        var strings = threes[c].Strings.Values.ToArray();
+
+                        for (var d = 0; d < strings.Length - 1; d++)
+                        {
+                            i++;
+                        }
                     }
                 }
             }
+
+            return i;
         }
 
-        return i;
-    }
-
-    [Benchmark]
-    public int ForEachMethod()
-    {
-        var i = 0;
-
-        foreach (var one in this.zero.Ones.Values)
+        [Benchmark]
+        public int ForEachMethod()
         {
-            foreach (var two in one.Twos.Values)
+            var i = 0;
+
+            foreach (var one in this.zero.Ones.Values)
             {
-                foreach (var three in two.Threes.Values)
+                foreach (var two in one.Twos.Values)
                 {
-                    foreach (var value in three.Strings.Values)
+                    foreach (var three in two.Threes.Values)
                     {
-                        i++;
+                        foreach (var value in three.Strings.Values)
+                        {
+                            i++;
+                        }
                     }
                 }
             }
+
+            return i;
         }
 
-        return i;
+        //[Benchmark]
+        //public int ForEachParallelMethod()
+        //{
+        //    var i = 0;
+
+        //    foreach (var one in this.zero.Ones.Values.AsParallel())
+        //    {
+        //        foreach (var two in one.Twos.Values.AsParallel())
+        //        {
+        //            foreach (var three in two.Threes.Values.AsParallel())
+        //            {
+        //                foreach (var value in three.Strings.Values.AsParallel())
+        //                {
+        //                    i++;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return i;
+        ////}
+
+        //[Benchmark]
+        //public int LinqMethod()
+        //{
+        //    var i = 0;
+
+        //    var values = this.zero.Ones.Values.SelectMany(o => o.Twos.Values.SelectMany(t => t.Threes.Values.SelectMany(th => th.Strings.Values)));
+
+        //    foreach (var value in values)
+        //    {
+        //        i++;
+        //    }
+
+        //    return i;
+        //}
     }
 
-    // [Benchmark]
-    // public int LinqMethod()
-    // {
-    //     var i = 0;
+    public class Zero
+    {
+        public Guid Id { get; set; }
+        public Dictionary<Guid, One> Ones { get; set; } = new Dictionary<Guid, One>();
+    }
 
-    //     var values = this.zero.Ones.Values.SelectMany(o => o.Twos.Values.SelectMany(t => t.Threes.Values.SelectMany(th => th.Strings.Values)));
+    public class One
+    {
+        public Guid Id { get; set; }
+        public Dictionary<Guid, Two> Twos { get; set; } = new Dictionary<Guid, Two>();
+    }
 
-    //     foreach (var value in values)
-    //     {
-    //         i++;
-    //     }
+    public class Two
+    {
+        public Guid Id { get; set; }
+        public Dictionary<Guid, Three> Threes { get; set; } = new Dictionary<Guid, Three>();
+    }
 
-    //     return i;
-    // }
-}
-
-public class Zero
-{
-    public Guid Id { get; set; }
-    public Dictionary<Guid, One> Ones { get; set; } = new Dictionary<Guid, One>();
-}
-
-public class One
-{
-    public Guid Id { get; set; }
-    public Dictionary<Guid, Two> Twos { get; set; } = new Dictionary<Guid, Two>();
-}
-
-public class Two
-{
-    public Guid Id { get; set; }
-    public Dictionary<Guid, Three> Threes { get; set; } = new Dictionary<Guid, Three>();
-}
-
-public class Three
-{
-    public Guid Id { get; set; }
-    public Dictionary<Guid, string> Strings { get; set; } = new Dictionary<Guid, string>();
+    public class Three
+    {
+        public Guid Id { get; set; }
+        public Dictionary<Guid, string> Strings { get; set; } = new Dictionary<Guid, string>();
+    }
 }

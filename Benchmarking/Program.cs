@@ -1,6 +1,17 @@
-﻿using BenchmarkDotNet.Running;
-using Benchmarking;
+namespace Benchmarking
+{
+    using System;
+    using BenchmarkDotNet.Running;
 
-Console.WriteLine("Hello, World!");
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+            Console.WriteLine("Start Benchmark");
 
-BenchmarkRunner.Run<ForEachBenchmark>();
+            _ = BenchmarkRunner.Run<ForEachBenchmark>();
+
+            Console.WriteLine("Finish Benchmark");
+        }
+    }
+}
