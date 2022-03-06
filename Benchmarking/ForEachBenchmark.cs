@@ -3,7 +3,6 @@ namespace Benchmarking
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
 
@@ -23,28 +22,28 @@ namespace Benchmarking
                 Id = Guid.NewGuid()
             };
 
-            for (var a = 0; a <= 10; a++)
+            for (var a = 0; a <= 50; a++)
             {
                 var one = new One
                 {
                     Id = Guid.NewGuid()
                 };
 
-                for (var b = 0; b <= 10; b++)
+                for (var b = 0; b <= 50; b++)
                 {
                     var two = new Two
                     {
                         Id = Guid.NewGuid()
                     };
 
-                    for (var c = 0; c <= 10; c++)
+                    for (var c = 0; c <= 50; c++)
                     {
                         var three = new Three
                         {
                             Id = Guid.NewGuid()
                         };
 
-                        for (var d = 0; d <= 10; d++)
+                        for (var d = 0; d <= 50; d++)
                         {
                             three.Strings.Add(Guid.NewGuid(), $"StringValue{a}-{b}-{c}-{d}");
                         }
@@ -224,83 +223,83 @@ namespace Benchmarking
             return i;
         }
 
-        //[Benchmark]
-        //public int WhileMethod()
-        //{
-        //    var i = 0;
+        [Benchmark]
+        public int WhileMethod()
+        {
+            var i = 0;
 
-        //    var a = 0;
-        //    var ones = this.zero.Ones.Values.ToArray();
+            var a = 0;
+            var ones = this.zero.Ones.Values.ToArray();
 
-        //    while (a < ones.Length)
-        //    {
-        //        var b = 0;
-        //        var twos = ones[a].Twos.Values.ToArray();
+            while (a < ones.Length)
+            {
+                var b = 0;
+                var twos = ones[a].Twos.Values.ToArray();
 
-        //        while (b < twos.Length)
-        //        {
-        //            var c = 0;
-        //            var threes = twos[b].Threes.Values.ToArray();
+                while (b < twos.Length)
+                {
+                    var c = 0;
+                    var threes = twos[b].Threes.Values.ToArray();
 
-        //            while (c < threes.Length)
-        //            {
-        //                var d = 0;
-        //                var strings = threes[c].Strings.Values.ToArray();
+                    while (c < threes.Length)
+                    {
+                        var d = 0;
+                        var strings = threes[c].Strings.Values.ToArray();
 
-        //                while (d < strings.Length)
-        //                {
-        //                    d++;
-        //                    i++;
-        //                }
+                        while (d < strings.Length)
+                        {
+                            d++;
+                            i++;
+                        }
 
-        //                c++;
-        //            }
+                        c++;
+                    }
 
-        //            b++;
-        //        }
+                    b++;
+                }
 
-        //        a++;
-        //    }
+                a++;
+            }
 
-        //    return i;
-        //}
+            return i;
+        }
 
-        //[Benchmark]
-        //public int ForEachParallelMethod()
-        //{
-        //    var i = 0;
+        [Benchmark]
+        public int ForEachParallelMethod()
+        {
+            var i = 0;
 
-        //    foreach (var one in this.zero.Ones.Values.AsParallel())
-        //    {
-        //        foreach (var two in one.Twos.Values.AsParallel())
-        //        {
-        //            foreach (var three in two.Threes.Values.AsParallel())
-        //            {
-        //                foreach (var value in three.Strings.Values.AsParallel())
-        //                {
-        //                    i++;
-        //                }
-        //            }
-        //        }
-        //    }
+            foreach (var one in this.zero.Ones.Values.AsParallel())
+            {
+                foreach (var two in one.Twos.Values.AsParallel())
+                {
+                    foreach (var three in two.Threes.Values.AsParallel())
+                    {
+                        foreach (var value in three.Strings.Values.AsParallel())
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
 
-        //    return i;
-        ////}
+            return i;
+        }
 
-        //[Benchmark]
-        //public int LinqMethod()
-        //{
-        //    var i = 0;
+        [Benchmark]
+        public int LinqMethod()
+        {
+            var i = 0;
 
-        //    var values = this.zero.Ones.Values.SelectMany(o => o.Twos.Values.SelectMany(t => t.Threes.Values.SelectMany(th => th.Strings.Values)));
+            var values = this.zero.Ones.Values.SelectMany(o => o.Twos.Values.SelectMany(t => t.Threes.Values.SelectMany(th => th.Strings.Values)));
 
-        //    foreach (var value in values)
-        //    {
-        //        i++;
-        //    }
+            foreach (var value in values)
+            {
+                i++;
+            }
 
-        //    return i;
-        //}
+            return i;
+        }
     }
 
     public class Zero
