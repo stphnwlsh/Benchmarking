@@ -22,4 +22,4 @@ jobs:
       run: dotnet build -c Release --no-restore
 
     - name: Benchmark
-      run: dotnet run -c Release --project ./benchmarking/benchmarking.csproj --no-build
+      run: dotnet run -c Release --no-build --framework net6.0 --project ./benchmarking/benchmarking.csproj
