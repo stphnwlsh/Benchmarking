@@ -90,6 +90,96 @@ namespace Benchmarking
             return i;
         }
 
+        [Benchmark]
+        public int ForEachEnumerableMethod()
+        {
+            var i = 0;
+
+            var ones = this.zero.Ones.Values.AsEnumerable();
+
+            foreach (var one in ones)
+            {
+                var twos = this.zero.Ones.Values.AsEnumerable();
+
+                foreach (var two in twos)
+                {
+                    var threes = this.zero.Ones.Values.AsEnumerable();
+
+                    foreach (var three in threes)
+                    {
+                        var strings = this.zero.Ones.Values.AsEnumerable();
+
+                        foreach (var value in strings)
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return i;
+        }
+
+        [Benchmark]
+        public int ForEachArrayMethod()
+        {
+            var i = 0;
+
+            var ones = this.zero.Ones.Values.ToArray();
+
+            foreach (var one in ones)
+            {
+                var twos = this.zero.Ones.Values.ToArray();
+
+                foreach (var two in twos)
+                {
+                    var threes = this.zero.Ones.Values.ToArray();
+
+                    foreach (var three in threes)
+                    {
+                        var strings = this.zero.Ones.Values.ToArray();
+
+                        foreach (var value in strings)
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return i;
+        }
+
+        [Benchmark]
+        public int ForEachHashsetMethod()
+        {
+            var i = 0;
+
+            var ones = this.zero.Ones.Values.ToHashSet();
+
+            foreach (var one in ones)
+            {
+                var twos = this.zero.Ones.Values.ToHashSet();
+
+                foreach (var two in twos)
+                {
+                    var threes = this.zero.Ones.Values.ToHashSet();
+
+                    foreach (var three in threes)
+                    {
+                        var strings = this.zero.Ones.Values.ToHashSet();
+
+                        foreach (var value in strings)
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return i;
+        }
+
         [Benchmark(Baseline = true)]
         public int ForEachMethod()
         {
@@ -112,46 +202,46 @@ namespace Benchmarking
             return i;
         }
 
-        [Benchmark]
-        public int WhileMethod()
-        {
-            var i = 0;
+        //[Benchmark]
+        //public int WhileMethod()
+        //{
+        //    var i = 0;
 
-            var a = 0;
-            var ones = this.zero.Ones.Values.ToArray();
+        //    var a = 0;
+        //    var ones = this.zero.Ones.Values.ToArray();
 
-            while (a < ones.Length)
-            {
-                var b = 0;
-                var twos = ones[a].Twos.Values.ToArray();
+        //    while (a < ones.Length)
+        //    {
+        //        var b = 0;
+        //        var twos = ones[a].Twos.Values.ToArray();
 
-                while (b < twos.Length)
-                {
-                    var c = 0;
-                    var threes = twos[b].Threes.Values.ToArray();
+        //        while (b < twos.Length)
+        //        {
+        //            var c = 0;
+        //            var threes = twos[b].Threes.Values.ToArray();
 
-                    while (c < threes.Length)
-                    {
-                        var d = 0;
-                        var strings = threes[c].Strings.Values.ToArray();
+        //            while (c < threes.Length)
+        //            {
+        //                var d = 0;
+        //                var strings = threes[c].Strings.Values.ToArray();
 
-                        while (d < strings.Length)
-                        {
-                            d++;
-                            i++;
-                        }
+        //                while (d < strings.Length)
+        //                {
+        //                    d++;
+        //                    i++;
+        //                }
 
-                        c++;
-                    }
+        //                c++;
+        //            }
 
-                    b++;
-                }
+        //            b++;
+        //        }
 
-                a++;
-            }
+        //        a++;
+        //    }
 
-            return i;
-        }
+        //    return i;
+        //}
 
         //[Benchmark]
         //public int ForEachParallelMethod()
