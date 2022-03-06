@@ -144,6 +144,65 @@ namespace Benchmarking
         }
 
         [Benchmark]
+        public int ForEachLessLookupsMethod()
+        {
+            var i = 0;
+
+            var ones = this.zero.Ones.Values;
+
+            foreach (var one in ones)
+            {
+                var twos = one.Twos.Values;
+
+                foreach (var two in twos)
+                {
+                    var threes = two.Threes.Values;
+
+                    foreach (var three in threes)
+                    {
+                        var values = three.Strings.Values;
+
+                        foreach (var value in values)
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return i;
+        }
+        [Benchmark]
+        public int ForEachLessLookupsStaticTypedMethod()
+        {
+            var i = 0;
+
+            Dictionary<Guid, One>.ValueCollection ones = this.zero.Ones.Values;
+
+            foreach (One one in ones)
+            {
+                Dictionary<Guid, Two>.ValueCollection twos = one.Twos.Values;
+
+                foreach (Two two in twos)
+                {
+                    Dictionary<Guid, Three>.ValueCollection threes = two.Threes.Values;
+
+                    foreach (Three three in threes)
+                    {
+                        Dictionary<Guid, string>.ValueCollection values = three.Strings.Values;
+
+                        foreach (string value in values)
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return i;
+        }
+
+        [Benchmark]
         public int StaticTypedForEachMethod()
         {
             var i = 0;
@@ -164,29 +223,6 @@ namespace Benchmarking
 
             return i;
         }
-
-        [Benchmark]
-        public int ParallelForEachMethod()
-        {
-            var i = 0;
-
-            Parallel.ForEach(this.zero.Ones.Values, one =>
-            {
-                Parallel.ForEach(one.Twos.Values, two =>
-                {
-                    Parallel.ForEach(two.Threes.Values, three =>
-                    {
-                        Parallel.ForEach(three.Strings.Values, value =>
-                        {
-                            i++;
-                        });
-                    });
-                });
-            });
-
-            return i;
-        }
-
 
         //[Benchmark]
         //public int WhileMethod()
