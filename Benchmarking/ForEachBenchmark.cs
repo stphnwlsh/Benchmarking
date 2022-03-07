@@ -6,44 +6,51 @@ namespace Benchmarking
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
 
+    [RankColumn]
+    [MemoryDiagnoser]
+    [MarkdownExporterAttribute.Default]
+    [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     [SimpleJob(RuntimeMoniker.Net48)]
-    [SimpleJob(RuntimeMoniker.NetCoreApp31)]
     [SimpleJob(RuntimeMoniker.Net60)]
-    [RPlotExporter]
     public class ForEachBenchmark
     {
+        [Params(5, 25)]
+        public int N;
+
         private Zero zero;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
+            Console.WriteLine("Start GlobalSetup");
+
             var zero = new Zero
             {
                 Id = Guid.NewGuid()
             };
 
-            for (var a = 0; a <= 50; a++)
+            for (var a = 0; a <= this.N; a++)
             {
                 var one = new One
                 {
                     Id = Guid.NewGuid()
                 };
 
-                for (var b = 0; b <= 50; b++)
+                for (var b = 0; b <= this.N; b++)
                 {
                     var two = new Two
                     {
                         Id = Guid.NewGuid()
                     };
 
-                    for (var c = 0; c <= 50; c++)
+                    for (var c = 0; c <= this.N; c++)
                     {
                         var three = new Three
                         {
                             Id = Guid.NewGuid()
                         };
 
-                        for (var d = 0; d <= 50; d++)
+                        for (var d = 0; d <= this.N; d++)
                         {
                             three.Strings.Add(Guid.NewGuid(), $"StringValue{a}-{b}-{c}-{d}");
                         }
@@ -58,6 +65,8 @@ namespace Benchmarking
             }
 
             this.zero = zero;
+
+            Console.WriteLine("Finish GlobalSetup");
         }
 
         [Benchmark]
@@ -143,87 +152,6 @@ namespace Benchmarking
         }
 
         [Benchmark]
-        public int ForEachLessLookupsMethod()
-        {
-            var i = 0;
-
-            var ones = this.zero.Ones.Values;
-
-            foreach (var one in ones)
-            {
-                var twos = one.Twos.Values;
-
-                foreach (var two in twos)
-                {
-                    var threes = two.Threes.Values;
-
-                    foreach (var three in threes)
-                    {
-                        var values = three.Strings.Values;
-
-                        foreach (var value in values)
-                        {
-                            i++;
-                        }
-                    }
-                }
-            }
-
-            return i;
-        }
-        [Benchmark]
-        public int ForEachLessLookupsStaticTypedMethod()
-        {
-            var i = 0;
-
-            Dictionary<Guid, One>.ValueCollection ones = this.zero.Ones.Values;
-
-            foreach (One one in ones)
-            {
-                Dictionary<Guid, Two>.ValueCollection twos = one.Twos.Values;
-
-                foreach (Two two in twos)
-                {
-                    Dictionary<Guid, Three>.ValueCollection threes = two.Threes.Values;
-
-                    foreach (Three three in threes)
-                    {
-                        Dictionary<Guid, string>.ValueCollection values = three.Strings.Values;
-
-                        foreach (string value in values)
-                        {
-                            i++;
-                        }
-                    }
-                }
-            }
-
-            return i;
-        }
-
-        [Benchmark]
-        public int StaticTypedForEachMethod()
-        {
-            var i = 0;
-
-            foreach (One one in this.zero.Ones.Values)
-            {
-                foreach (Two two in one.Twos.Values)
-                {
-                    foreach (Three three in two.Threes.Values)
-                    {
-                        foreach (string value in three.Strings.Values)
-                        {
-                            i++;
-                        }
-                    }
-                }
-            }
-
-            return i;
-        }
-
-        [Benchmark]
         public int WhileMethod()
         {
             var i = 0;
@@ -265,33 +193,11 @@ namespace Benchmarking
         }
 
         [Benchmark]
-        public int ForEachParallelMethod()
-        {
-            var i = 0;
-
-            foreach (var one in this.zero.Ones.Values.AsParallel())
-            {
-                foreach (var two in one.Twos.Values.AsParallel())
-                {
-                    foreach (var three in two.Threes.Values.AsParallel())
-                    {
-                        foreach (var value in three.Strings.Values.AsParallel())
-                        {
-                            i++;
-                        }
-                    }
-                }
-            }
-
-            return i;
-        }
-
-        [Benchmark]
         public int LinqMethod()
         {
             var i = 0;
 
-            var values = this.zero.Ones.Values.SelectMany(o => o.Twos.Values.SelectMany(t => t.Threes.Values.SelectMany(th => th.Strings.Values)));
+            var values = this.zero.Ones.Values.SelectMany(o => o.Twos.Values).SelectMany(t => t.Threes.Values).SelectMany(th => th.Strings.Values);
 
             foreach (var value in values)
             {
