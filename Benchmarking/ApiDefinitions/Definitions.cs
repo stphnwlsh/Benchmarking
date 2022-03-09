@@ -3,11 +3,17 @@ namespace Benchmarking.ApiDefinitions
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Refit;
+    using RestEase;
 
-    [Headers("x-api-key: b95bfb30-55bc-4327-bb8b-35d740f70051")]
-    public interface ITheCatsAPI
+    public interface IRefitCatsApi
     {
-        [Get("/v1/images/search")]
-        Task<ApiResponse<IEnumerable<SearchResult>>> Search([AliasAs("q")] string breedIdentifier);
+        [Refit.Get("/v1/images/search")]
+        Task<ApiResponse<IEnumerable<SearchResult>>> Search([Refit.Query("q")] string breedIdentifier);
+    }
+
+    public interface IRestEaseCatsApi
+    {
+        [RestEase.Get("/v1/images/search")]
+        Task<Response<IEnumerable<SearchResult>>> Search([RestEase.Query("q")] string breedIdentifier);
     }
 }
