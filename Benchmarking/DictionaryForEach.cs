@@ -35,21 +35,6 @@ namespace Benchmarking
         #region For
 
         [Benchmark]
-        public int ForListMethod()
-        {
-            var i = 0;
-
-            var items = this.items.Values.ToList();
-
-            for (var a = 0; a < items.Count - 1; a++)
-            {
-                i++;
-            }
-
-            return i;
-        }
-
-        [Benchmark]
         public int ForArrayMethod()
         {
             var i = 0;
@@ -111,35 +96,6 @@ namespace Benchmarking
             return i;
         }
 
-        [Benchmark]
-        public int ForEachListMethod()
-        {
-            var i = 0;
-
-            var items = this.items.Values.ToList();
-
-            foreach (var one in items)
-            {
-                i++;
-            }
-
-            return i;
-        }
-
         #endregion ForEach
-
-        #region Linq
-
-        [Benchmark]
-        public int LinqForEachMethod()
-        {
-            var i = 0;
-
-            this.items.Values.ToList().ForEach(value => i++);
-
-            return i;
-        }
-
-        #endregion Linq
     }
 }
