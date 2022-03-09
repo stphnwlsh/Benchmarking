@@ -14,7 +14,7 @@ namespace Benchmarking
     [SimpleJob(RuntimeMoniker.Net60)]
     public class NestedDictionaryForEach
     {
-        [Params(5, 25)]
+        [Params(10, 50, 100)]
         public int N;
 
         private Zero zero;
