@@ -100,7 +100,7 @@ namespace Benchmarking
             {
                 var response = await this.dalSoftClient.V1.Images.Search.Query(new { q = "bengal" }).Get();
 
-                if (response.StatusCode == HttpStatusCode.OK)
+                if (response.HttpResponseMessage.StatusCode == HttpStatusCode.OK)
                 {
                     Console.WriteLine(response.Content.ToString());
                 }
