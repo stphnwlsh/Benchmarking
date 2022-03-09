@@ -2,7 +2,6 @@ namespace Benchmarking
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -22,7 +21,7 @@ namespace Benchmarking
     [SimpleJob(RuntimeMoniker.Net60)]
     public class HttpGetRequests
     {
-        [Params(10)]
+        [Params(50)]
         public int N;
 
         [Benchmark]
@@ -44,9 +43,7 @@ namespace Benchmarking
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var result = JsonSerializer.Deserialize<IEnumerable<SearchResult>>(json);
-
-                    Console.WriteLine($"Result: {result?.First().id} & Response: {json}");
+                    _ = JsonSerializer.Deserialize<IEnumerable<SearchResult>>(json);
                 }
                 else
                 {
@@ -69,9 +66,7 @@ namespace Benchmarking
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var json = JsonSerializer.Serialize(response.Content);
-
-                    Console.WriteLine($"Result: {response.Content?.First().id} & Response: {json}");
+                    _ = JsonSerializer.Serialize(response.Content);
                 }
                 else
                 {
@@ -94,9 +89,7 @@ namespace Benchmarking
 
                 if (((HttpResponseMessage)response).StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (List<SearchResult>)response;
-
-                    Console.WriteLine($"Result: {result.First().id} & Response: {response}");
+                    _ = (List<SearchResult>)response;
                 }
                 else
                 {
@@ -122,9 +115,7 @@ namespace Benchmarking
                 if (response.StatusCode == (int)HttpStatusCode.OK)
                 {
                     var json = await response.ResponseMessage.Content.ReadAsStringAsync();
-                    var result = JsonSerializer.Deserialize<IEnumerable<SearchResult>>(json);
-
-                    Console.WriteLine($"Result: {result?.First().id} & Response: {json}");
+                    _ = JsonSerializer.Deserialize<IEnumerable<SearchResult>>(json);
                 }
                 else
                 {
@@ -147,9 +138,7 @@ namespace Benchmarking
 
                 if (response.ResponseMessage.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = response.GetContent();
-
-                    Console.WriteLine($"Result: {result?.First().id} & Response: {response.StringContent}");
+                    _ = response.GetContent();
                 }
                 else
                 {

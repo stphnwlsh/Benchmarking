@@ -1,7 +1,6 @@
 namespace Benchmarking
 {
     using System;
-    using System.Threading.Tasks;
     using BenchmarkDotNet.Running;
     using Serilog;
 
