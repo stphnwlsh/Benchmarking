@@ -9,7 +9,8 @@ namespace Benchmarking
         {
             Console.WriteLine("Start Benchmark");
 
-            _ = BenchmarkRunner.Run<ForEachBenchmark>();
+            _ = BenchmarkRunner.Run<DictionaryForEach>();
+            //_ = BenchmarkRunner.Run<NestedDictionaryForEach>();
 
             Console.WriteLine("Finish Benchmark");
         }

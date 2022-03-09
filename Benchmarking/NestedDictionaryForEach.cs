@@ -12,7 +12,7 @@ namespace Benchmarking
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     [SimpleJob(RuntimeMoniker.Net48)]
     [SimpleJob(RuntimeMoniker.Net60)]
-    public class ForEachBenchmark
+    public class NestedDictionaryForEach
     {
         [Params(5, 25)]
         public int N;
@@ -69,8 +69,40 @@ namespace Benchmarking
             Console.WriteLine("Finish GlobalSetup");
         }
 
+        #region For
+
         [Benchmark]
-        public int ForMethod()
+        public int ForListMethod()
+        {
+            var i = 0;
+
+            var ones = this.zero.Ones.Values.ToList();
+
+            for (var a = 0; a < ones.Count - 1; a++)
+            {
+                var twos = ones[a].Twos.Values.ToList();
+
+                for (var b = 0; b < twos.Count - 1; b++)
+                {
+                    var threes = twos[b].Threes.Values.ToList();
+
+                    for (var c = 0; c < threes.Count - 1; c++)
+                    {
+                        var strings = threes[c].Strings.Values.ToList();
+
+                        for (var d = 0; d < strings.Count - 1; d++)
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return i;
+        }
+
+        [Benchmark]
+        public int ForArrayMethod()
         {
             var i = 0;
 
@@ -99,38 +131,12 @@ namespace Benchmarking
             return i;
         }
 
-        [Benchmark]
-        public int ForEachArrayMethod()
-        {
-            var i = 0;
+        #endregion For
 
-            var ones = this.zero.Ones.Values.ToArray();
-
-            foreach (var one in ones)
-            {
-                var twos = this.zero.Ones.Values.ToArray();
-
-                foreach (var two in twos)
-                {
-                    var threes = this.zero.Ones.Values.ToArray();
-
-                    foreach (var three in threes)
-                    {
-                        var strings = this.zero.Ones.Values.ToArray();
-
-                        foreach (var value in strings)
-                        {
-                            i++;
-                        }
-                    }
-                }
-            }
-
-            return i;
-        }
+        #region ForEach
 
         [Benchmark(Baseline = true)]
-        public int ForEachMethod()
+        public int ForEachBaselineMethod()
         {
             var i = 0;
 
@@ -152,60 +158,120 @@ namespace Benchmarking
         }
 
         [Benchmark]
-        public int WhileMethod()
+        public int ForEachMethod()
         {
             var i = 0;
 
-            var a = 0;
-            var ones = this.zero.Ones.Values.ToArray();
+            var ones = this.zero.Ones.Values;
 
-            while (a < ones.Length)
+            foreach (var one in ones)
             {
-                var b = 0;
-                var twos = ones[a].Twos.Values.ToArray();
+                var twos = one.Twos.Values;
 
-                while (b < twos.Length)
+                foreach (var two in twos)
                 {
-                    var c = 0;
-                    var threes = twos[b].Threes.Values.ToArray();
+                    var threes = two.Threes.Values;
 
-                    while (c < threes.Length)
+                    foreach (var three in threes)
                     {
-                        var d = 0;
-                        var strings = threes[c].Strings.Values.ToArray();
+                        var strings = three.Strings.Values;
 
-                        while (d < strings.Length)
+                        foreach (var value in strings)
                         {
-                            d++;
                             i++;
                         }
-
-                        c++;
                     }
-
-                    b++;
                 }
-
-                a++;
             }
 
             return i;
         }
 
         [Benchmark]
-        public int LinqMethod()
+        public int ForEachArrayMethod()
         {
             var i = 0;
 
-            var values = this.zero.Ones.Values.SelectMany(o => o.Twos.Values).SelectMany(t => t.Threes.Values).SelectMany(th => th.Strings.Values);
+            var ones = this.zero.Ones.Values.ToArray();
 
-            foreach (var value in values)
+            foreach (var one in ones)
             {
-                i++;
+                var twos = one.Twos.Values.ToArray();
+
+                foreach (var two in twos)
+                {
+                    var threes = two.Threes.Values.ToArray();
+
+                    foreach (var three in threes)
+                    {
+                        var strings = three.Strings.Values.ToArray();
+
+                        foreach (var value in strings)
+                        {
+                            i++;
+                        }
+                    }
+                }
             }
 
             return i;
         }
+
+        [Benchmark]
+        public int ForEachListMethod()
+        {
+            var i = 0;
+
+            var ones = this.zero.Ones.Values.ToList();
+
+            foreach (var one in ones)
+            {
+                var twos = one.Twos.Values.ToList();
+
+                foreach (var two in twos)
+                {
+                    var threes = two.Threes.Values.ToList();
+
+                    foreach (var three in threes)
+                    {
+                        var strings = three.Strings.Values.ToList();
+
+                        foreach (var value in strings)
+                        {
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return i;
+        }
+
+        #endregion ForEach
+
+        #region Linq
+
+        [Benchmark]
+        public int LinqForEachMethod()
+        {
+            var i = 0;
+
+            this.zero.Ones.Values.ToList().ForEach(one => one.Twos.Values.ToList().ForEach(two => two.Threes.Values.ToList().ForEach(three => three.Strings.Values.ToList().ForEach(value => i++))));
+
+            return i;
+        }
+
+        [Benchmark]
+        public int LinqSelectManyMethod()
+        {
+            var i = 0;
+
+            this.zero.Ones.Values.SelectMany(o => o.Twos.Values).SelectMany(t => t.Threes.Values).SelectMany(th => th.Strings.Values).ToList().ForEach(value => i++);
+
+            return i;
+        }
+
+        #endregion Linq
     }
 
     public class Zero
