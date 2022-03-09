@@ -5,6 +5,7 @@ namespace Benchmarking
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Security.Claims;
     using System.Text.Json;
     using System.Threading.Tasks;
     using ApiDefinitions;
@@ -24,21 +25,45 @@ namespace Benchmarking
         [Params(50)]
         public int N;
 
+        private HttpClient httpClient;
+        private IRefitCatsApi refitClient;
+        private Url flurlClient;
+        private IRestEaseCatsApi restEaseClient;
+        private dynamic dalSoftClient;
+
+
+        [GlobalSetup]
+        public void SetupAsync()
+        {
+            // Setup Http Client
+            this.httpClient = new HttpClient()
+            {
+                BaseAddress = new Uri("https://api.thecatapi.com")
+            };
+            this.httpClient.DefaultRequestHeaders.Accept.Clear();
+            this.httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // Setup Refit Client
+            this.refitClient = RestService.For<IRefitCatsApi>("https://api.thecatapi.com");
+
+            // Setup Dalsoft Client
+            this.dalSoftClient = new DalSoft.RestClient.RestClient("https://api.thecatapi.com");
+
+            // Setup Flurl Client
+            this.flurlClient = "https://api.thecatapi.com"
+                .AppendPathSegment("/v1/images/search")
+                .SetQueryParams(new { q = "bengal" });
+
+            // Setup Refit Client
+            this.restEaseClient = RestEase.RestClient.For<IRestEaseCatsApi>("https://api.thecatapi.com");
+        }
+
         [Benchmark]
         public async Task HttpClientMethod()
         {
-            // Setup HttpClient
-            var httpClient = new HttpClient()
-            {
-                BaseAddress = new Uri("https://api.thecatapi.com")
-
-            };
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
             for (var x = 0; x < this.N; x++)
             {
-                var response = await httpClient.GetAsync("/v1/images/search?q=bengal");
+                var response = await this.httpClient.GetAsync("/v1/images/search?q=bengal");
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
@@ -57,12 +82,9 @@ namespace Benchmarking
         [Benchmark]
         public async Task RefitClientMethod()
         {
-            // Setup Refit Client
-            var refitClient = RestService.For<IRefitCatsApi>("https://api.thecatapi.com");
-
             for (var x = 0; x < this.N; x++)
             {
-                var response = await refitClient.Search("bengal");
+                var response = await this.refitClient.Search("bengal");
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
@@ -80,12 +102,9 @@ namespace Benchmarking
         [Benchmark]
         public async Task DalSoftClientMethod()
         {
-            // Setup Dalsoft Client
-            dynamic dalSoftClient = new DalSoft.RestClient.RestClient("https://api.thecatapi.com");
-
             for (var x = 0; x < this.N; x++)
             {
-                var response = await dalSoftClient.V1.Images.Search.Query(new { q = "bengal" }).Get();
+                var response = await this.dalSoftClient.V1.Images.Search.Query(new { q = "bengal" }).Get();
 
                 if (((HttpResponseMessage)response).StatusCode == HttpStatusCode.OK)
                 {
@@ -103,14 +122,10 @@ namespace Benchmarking
         [Benchmark]
         public async Task FlurlClientMethod()
         {
-
             for (var x = 0; x < this.N; x++)
             {
                 // Setup Flurl Client
-                var response = await "https://api.thecatapi.com"
-                    .AppendPathSegment("/v1/images/search")
-                    .SetQueryParams(new { q = "bengal" })
-                    .GetAsync();
+                var response = await this.flurlClient.GetAsync();
 
                 if (response.StatusCode == (int)HttpStatusCode.OK)
                 {
@@ -129,12 +144,9 @@ namespace Benchmarking
         [Benchmark]
         public async Task RestEaseClientMethod()
         {
-            // Setup Refit Client
-            var restEaseClient = RestEase.RestClient.For<IRestEaseCatsApi>("https://api.thecatapi.com");
-
             for (var x = 0; x < this.N; x++)
             {
-                var response = await restEaseClient.Search("bengal");
+                var response = await this.restEaseClient.Search("bengal");
 
                 if (response.ResponseMessage.StatusCode == HttpStatusCode.OK)
                 {
