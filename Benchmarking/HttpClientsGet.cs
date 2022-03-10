@@ -5,7 +5,6 @@ namespace Benchmarking
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Security.Claims;
     using System.Text.Json;
     using System.Threading.Tasks;
     using ApiDefinitions;
@@ -20,7 +19,7 @@ namespace Benchmarking
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     [SimpleJob(RuntimeMoniker.Net60)]
-    public class HttpGetRequests
+    public class HttpClientsGet
     {
         [Params(50)]
         public int N;

@@ -12,7 +12,7 @@ namespace Benchmarking
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     [SimpleJob(RuntimeMoniker.Net48)]
     [SimpleJob(RuntimeMoniker.Net60)]
-    public class NestedDictionaryForEach
+    public class IteratingNestedDictionaries
     {
         [Params(10, 50, 100)]
         public int N;
