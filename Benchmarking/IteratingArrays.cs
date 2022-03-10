@@ -1,61 +1,61 @@
 namespace Benchmarking
 {
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
+    using System;
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
-    using TraceReloggerLib;
 
     [RankColumn]
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     [SimpleJob(RuntimeMoniker.Net60)]
-    public class IteratingLists
+    public class IteratingArrays
     {
         [Params(100)]//, 1000, 100000)]
         public int N;
 
-        private readonly List<string> benchmarkList = new List<string>();
+        private string[] benchmarkArray;
 
         [GlobalSetup]
         public void Setup()
         {
+            this.benchmarkArray = new string[this.N];
+
             for (var i = 0; i < this.N; i++)
             {
-                this.benchmarkList.Add($"i");
+                this.benchmarkArray[i] = $"i";
             }
         }
 
         [Benchmark]
-        public void For()
+        public void ForLoop()
         {
             for (var i = 0; i < this.N; i++)
             {
-                _ = this.benchmarkList[i];
+                _ = this.benchmarkArray[i];
             }
         }
 
         [Benchmark]
-        public void ForEach()
+        public void ForEachLoop()
         {
-            foreach (var item in this.benchmarkList)
+            foreach (var item in this.benchmarkArray)
             {
                 _ = item;
             }
         }
 
         [Benchmark]
-        public void ForEachLync()
+        public void ArrayForEach()
         {
-            this.benchmarkList.ForEach(item => _ = item);
+            Array.ForEach(this.benchmarkArray, item => _ = item);
         }
 
         [Benchmark]
         public void Enumerator()
         {
-            var enumerator = this.benchmarkList.GetEnumerator();
+            var enumerator = this.benchmarkArray.GetEnumerator();
 
             while (enumerator.MoveNext())
             {
@@ -66,7 +66,7 @@ namespace Benchmarking
         [Benchmark]
         public void SpanFor()
         {
-            var span = CollectionsMarshal.AsSpan(this.benchmarkList);
+            var span = this.benchmarkArray.AsSpan();
 
             for (var i = 0; i < this.N; i++)
             {
@@ -77,7 +77,7 @@ namespace Benchmarking
         [Benchmark]
         public void SpanForEach()
         {
-            var span = CollectionsMarshal.AsSpan(this.benchmarkList);
+            var span = this.benchmarkArray.AsSpan();
 
             foreach (var item in span)
             {
@@ -88,7 +88,7 @@ namespace Benchmarking
         [Benchmark]
         public void ParallelForEach()
         {
-            _ = Parallel.ForEach(this.benchmarkList, item => _ = item);
+            _ = Parallel.ForEach(this.benchmarkArray, item => _ = item);
         }
     }
 }
