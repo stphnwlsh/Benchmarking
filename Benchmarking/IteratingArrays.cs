@@ -12,7 +12,7 @@ namespace Benchmarking
     [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingArrays
     {
-        [Params(100)]//, 1000, 100000)]
+        [Params(10000)]
         public int N;
 
         private string[] benchmarkArray;
@@ -83,12 +83,6 @@ namespace Benchmarking
             {
                 _ = item;
             }
-        }
-
-        [Benchmark]
-        public void ParallelForEach()
-        {
-            _ = Parallel.ForEach(this.benchmarkArray, item => _ = item);
         }
     }
 }

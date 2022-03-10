@@ -5,7 +5,6 @@ namespace Benchmarking
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
-    using TraceReloggerLib;
 
     [RankColumn]
     [MemoryDiagnoser]
@@ -14,7 +13,7 @@ namespace Benchmarking
     [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingLists
     {
-        [Params(100)]//, 1000, 100000)]
+        [Params(10000)]
         public int N;
 
         private readonly List<string> benchmarkList = new List<string>();
@@ -83,12 +82,6 @@ namespace Benchmarking
             {
                 _ = item;
             }
-        }
-
-        [Benchmark]
-        public void ParallelForEach()
-        {
-            _ = Parallel.ForEach(this.benchmarkList, item => _ = item);
         }
     }
 }
