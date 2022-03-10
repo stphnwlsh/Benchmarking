@@ -46,13 +46,13 @@ namespace Benchmarking
         }
 
         [Benchmark]
-        public void ForEachLync()
+        public void ForEachLinq()
         {
             this.benchmarkList.ForEach(item => _ = item);
         }
 
         [Benchmark]
-        public void Enumerator()
+        public void GetEnumerator()
         {
             var enumerator = this.benchmarkList.GetEnumerator();
 

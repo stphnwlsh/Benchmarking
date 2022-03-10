@@ -53,7 +53,7 @@ namespace Benchmarking
         }
 
         [Benchmark]
-        public void Enumerator()
+        public void GetEnumerator()
         {
             var enumerator = this.benchmarkArray.GetEnumerator();
 
