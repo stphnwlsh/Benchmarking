@@ -6,8 +6,6 @@ namespace Benchmarking
 
     internal class Program
     {
-
-
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
@@ -20,8 +18,8 @@ namespace Benchmarking
             //_ = BenchmarkRunner.Run<IteratingAccessingLists>();
             //_ = BenchmarkRunner.Run<IteratingArrays>();
             //_ = BenchmarkRunner.Run<IteratingLists>();
-            //_ = BenchmarkRunner.Run<HttpClientsGet>();
-            _ = BenchmarkRunner.Run<IteratingLists>();
+            _ = BenchmarkRunner.Run<IteratingHttpClientsGet>();
+            //_ = BenchmarkRunner.Run<IteratingLists>();
             //_ = BenchmarkRunner.Run<IteratingNestedDictionaries>();
 
             Console.WriteLine("Finish Benchmark");
