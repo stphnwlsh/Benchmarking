@@ -1,7 +1,6 @@
 namespace Benchmarking
 {
     using System;
-    using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
 
@@ -12,7 +11,7 @@ namespace Benchmarking
     [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingArrays
     {
-        [Params(10000)]
+        [Params(100, 1000, 10000)]
         public int N;
 
         private string[] benchmarkArray;

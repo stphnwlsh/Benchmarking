@@ -14,10 +14,10 @@ namespace Benchmarking
     [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingDictionaries
     {
-        [Params(500, 5000, 50000, 500000)]
+        [Params(100, 1000, 10000)]
         public int N;
 
-        private readonly Dictionary<Guid, string> items = new Dictionary<Guid, string>();
+        private readonly Dictionary<Guid, string> items = new();
 
         [GlobalSetup]
         public void GlobalSetup()

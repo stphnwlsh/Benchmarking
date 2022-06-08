@@ -19,7 +19,7 @@ namespace Benchmarking
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     [SimpleJob(RuntimeMoniker.Net60)]
-    public class HttpClientsGet
+    public class IteratingHttpClientsGet : IDisposable
     {
         [Params(50)]
         public int N;
@@ -158,6 +158,11 @@ namespace Benchmarking
 
                 x++;
             }
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }
