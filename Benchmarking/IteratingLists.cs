@@ -9,8 +9,7 @@ namespace Benchmarking
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    [SimpleJob(RuntimeMoniker.Net48)]
-    //[SimpleJob(RuntimeMoniker.Net60)]
+    [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingLists
     {
         [Params(100, 10000)]
@@ -62,26 +61,26 @@ namespace Benchmarking
             }
         }
 
-        // [Benchmark]
-        // public void SpanFor()
-        // {
-        //     var span = CollectionsMarshal.AsSpan(this.benchmarkList);
+        [Benchmark]
+        public void SpanFor()
+        {
+            var span = CollectionsMarshal.AsSpan(this.benchmarkList);
 
-        //     for (var i = 0; i < this.N; i++)
-        //     {
-        //         _ = span[i];
-        //     }
-        // }
+            for (var i = 0; i < this.N; i++)
+            {
+                _ = span[i];
+            }
+        }
 
-        // [Benchmark]
-        // public void SpanForEach()
-        // {
-        //     var span = CollectionsMarshal.AsSpan(this.benchmarkList);
+        [Benchmark]
+        public void SpanForEach()
+        {
+            var span = CollectionsMarshal.AsSpan(this.benchmarkList);
 
-        //     foreach (var item in span)
-        //     {
-        //         _ = item;
-        //     }
-        // }
+            foreach (var item in span)
+            {
+                _ = item;
+            }
+        }
     }
 }
