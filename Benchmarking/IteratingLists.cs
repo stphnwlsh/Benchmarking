@@ -3,6 +3,7 @@ namespace Benchmarking
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Diagnosers;
     using BenchmarkDotNet.Jobs;
 
     [RankColumn]
