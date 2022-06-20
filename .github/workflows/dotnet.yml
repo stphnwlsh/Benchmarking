@@ -1,25 +1,24 @@
 name: .NET
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
+      - uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
+      - name: Restore
+        run: dotnet restore
 
-    - name: Restore
-      run: dotnet restore
+      - name: Build
+        run: dotnet build -c Release --no-restore
 
-    - name: Build
-      run: dotnet build -c Release --no-restore
-
-    - name: Benchmark
-      run: dotnet run -c Release --no-build --framework net6.0 --project ./benchmarking/benchmarking.csproj
+      - name: Benchmark
+        run: dotnet run -c Release --no-build --framework net6.0 --project ./benchmarking/benchmarking.csproj

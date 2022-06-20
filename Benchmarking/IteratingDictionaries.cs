@@ -17,7 +17,7 @@ namespace Benchmarking
         [Params(100, 1000, 10000)]
         public int N;
 
-        private readonly Dictionary<Guid, string> items = new();
+        private readonly Dictionary<Guid, string> items = new Dictionary<Guid, string>();
 
         [GlobalSetup]
         public void GlobalSetup()

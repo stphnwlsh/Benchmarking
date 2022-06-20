@@ -16,7 +16,7 @@ namespace Benchmarking
         [Params(100, 10000)]
         public int N;
 
-        private readonly List<string> benchmarkList = new();
+        private readonly List<string> benchmarkList = new List<string>();
 
         [GlobalSetup]
         public void Setup()
