@@ -70,28 +70,28 @@ namespace Benchmarking
             }
         }
 
-        [Benchmark]
-        public void SpanFor()
-        {
-            var span = this.benchmarkArray.AsSpan();
+        // [Benchmark]
+        // public void SpanFor()
+        // {
+        //     var span = this.benchmarkArray.AsSpan();
 
-            for (var i = 0; i < this.N; i++)
-            {
-                var allocated = $"{span[i]}";
-                _ = allocated;
-            }
-        }
+        //     for (var i = 0; i < this.N; i++)
+        //     {
+        //         var allocated = $"{span[i]}";
+        //         _ = allocated;
+        //     }
+        // }
 
-        [Benchmark]
-        public void SpanForEach()
-        {
-            var span = this.benchmarkArray.AsSpan();
+        // [Benchmark]
+        // public void SpanForEach()
+        // {
+        //     var span = this.benchmarkArray.AsSpan();
 
-            foreach (var item in span)
-            {
-                var allocated = $"{item}";
-                _ = allocated;
-            }
-        }
+        //     foreach (var item in span)
+        //     {
+        //         var allocated = $"{item}";
+        //         _ = allocated;
+        //     }
+        // }
     }
 }
