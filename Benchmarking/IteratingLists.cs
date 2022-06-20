@@ -9,10 +9,11 @@ namespace Benchmarking
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
+    [SimpleJob(RuntimeMoniker.Net48)]
     [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingLists
     {
-        [Params(100, 1000, 10000)]
+        [Params(100, 10000)]
         public int N;
 
         private readonly List<string> benchmarkList = new();
