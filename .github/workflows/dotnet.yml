@@ -29,4 +29,5 @@ jobs:
         run: dotnet build -c Release --no-restore
 
       - name: Benchmark
-        run: dotnet run -c Release --no-build --framework net6.0 --project .\\benchmarking\\benchmarking.csproj
+        run: ls
+        #run: dotnet run -c Release --no-build --framework net6.0 --project .\\benchmarking\\benchmarking.csproj
