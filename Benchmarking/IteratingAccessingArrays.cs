@@ -9,7 +9,6 @@ namespace Benchmarking
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     [SimpleJob(RuntimeMoniker.Net48)]
-    [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingAccessingArrays
     {
         [Params(100, 10000)]
