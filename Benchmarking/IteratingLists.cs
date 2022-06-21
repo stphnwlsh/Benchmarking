@@ -10,7 +10,7 @@ namespace Benchmarking
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    [SimpleJob(RuntimeMoniker.Net60)]
+    [SimpleJob(RuntimeMoniker.Net48)]
     public class IteratingLists
     {
         [Params(100, 10000)]
