@@ -8,7 +8,7 @@ namespace Benchmarking
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    [SimpleJob(RuntimeMoniker.Net48)]
+    [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingAccessingArrays
     {
         [Params(100, 10000)]
@@ -69,28 +69,28 @@ namespace Benchmarking
             }
         }
 
-        // [Benchmark]
-        // public void SpanFor()
-        // {
-        //     var span = this.benchmarkArray.AsSpan();
+        [Benchmark]
+        public void SpanFor()
+        {
+            var span = this.benchmarkArray.AsSpan();
 
-        //     for (var i = 0; i < this.N; i++)
-        //     {
-        //         var allocated = $"{span[i]}";
-        //         _ = allocated;
-        //     }
-        // }
+            for (var i = 0; i < this.N; i++)
+            {
+                var allocated = $"{span[i]}";
+                _ = allocated;
+            }
+        }
 
-        // [Benchmark]
-        // public void SpanForEach()
-        // {
-        //     var span = this.benchmarkArray.AsSpan();
+        [Benchmark]
+        public void SpanForEach()
+        {
+            var span = this.benchmarkArray.AsSpan();
 
-        //     foreach (var item in span)
-        //     {
-        //         var allocated = $"{item}";
-        //         _ = allocated;
-        //     }
-        // }
+            foreach (var item in span)
+            {
+                var allocated = $"{item}";
+                _ = allocated;
+            }
+        }
     }
 }
