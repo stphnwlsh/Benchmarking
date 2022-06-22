@@ -1,6 +1,7 @@
 namespace Benchmarking
 {
     using System;
+    using System.Collections.Generic;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
 
@@ -10,7 +11,7 @@ namespace Benchmarking
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     public class IteratingArrayFors
     {
-        [Params(10000)]
+        [Params(100000)]
         public int N;
 
         private string[] array;
@@ -43,6 +44,22 @@ namespace Benchmarking
         }
 
         [Benchmark]
+        public void ForLoopReadOnly()
+        {
+            var benchmarkArray = Array.AsReadOnly(this.array);
+
+            for (var i = 0; i < this.N; i++)
+            {
+                var allocated = $"{benchmarkArray[i]}";
+
+                if (allocated == "NotEquals")
+                {
+                    Console.WriteLine(allocated);
+                };
+            }
+        }
+
+        [Benchmark]
         public void ForLoopLocalLength()
         {
             var benchmarkArray = this.array;
@@ -62,7 +79,7 @@ namespace Benchmarking
         [Benchmark]
         public void SpanForLoop()
         {
-            var benchmarkSpan = array.AsSpan();
+            var benchmarkSpan = this.array.AsSpan();
 
             for (var i = 0; i < this.N; i++)
             {
@@ -78,12 +95,60 @@ namespace Benchmarking
         [Benchmark]
         public void SpanForLoopLocalLength()
         {
-            var benchmarkSpan = array.AsSpan();
+            var benchmarkSpan = this.array.AsSpan();
             var length = benchmarkSpan.Length;
 
             for (var i = 0; i < length; i++)
             {
                 var allocated = $"{benchmarkSpan[i]}";
+
+                if (allocated == "NotEquals")
+                {
+                    Console.WriteLine(allocated);
+                };
+            }
+        }
+
+        [Benchmark]
+        public void ForEachLoop()
+        {
+            var benchmarkArray = this.array;
+
+            foreach (var item in benchmarkArray)
+            {
+                var allocated = $"{item}";
+
+                if (allocated == "NotEquals")
+                {
+                    Console.WriteLine(allocated);
+                };
+            }
+        }
+
+        [Benchmark]
+        public void ForEachLoopReadOnly()
+        {
+            var benchmarkArray = Array.AsReadOnly(this.array);
+
+            foreach (var item in benchmarkArray)
+            {
+                var allocated = $"{item}";
+
+                if (allocated == "NotEquals")
+                {
+                    Console.WriteLine(allocated);
+                };
+            }
+        }
+
+        [Benchmark]
+        public void SpanForEachLoop()
+        {
+            var benchmarkSpan = this.array.AsSpan();
+
+            foreach (var item in benchmarkSpan)
+            {
+                var allocated = $"{item}";
 
                 if (allocated == "NotEquals")
                 {
