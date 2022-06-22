@@ -15,8 +15,8 @@ namespace Benchmarking
 
             Console.WriteLine("Start Benchmark");
 
-            _ = BenchmarkRunner.Run<IteratingAccessingArrays>();
-            _ = BenchmarkRunner.Run<IteratingAccessingLists>();
+            _ = BenchmarkRunner.Run<IteratingArrays>();
+            _ = BenchmarkRunner.Run<IteratingLists>();
             _ = BenchmarkRunner.Run<IteratingDictionaries>();
             //_ = BenchmarkRunner.Run<IteratingHttpClientsGet>();
             //_ = BenchmarkRunner.Run<IteratingNestedDictionaries>();
