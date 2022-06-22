@@ -4,6 +4,7 @@ namespace Benchmarking
     using System.Collections.Generic;
     using System.Linq;
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Diagnosers;
 
     [RankColumn]
     [MemoryDiagnoser]

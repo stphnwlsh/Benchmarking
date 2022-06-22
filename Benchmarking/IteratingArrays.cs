@@ -2,13 +2,12 @@ namespace Benchmarking
 {
     using System;
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Jobs;
+    using BenchmarkDotNet.Diagnosers;
 
     [RankColumn]
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingArrays
     {
         [Params(100, 10000)]
@@ -32,7 +31,8 @@ namespace Benchmarking
         {
             for (var i = 0; i < this.N; i++)
             {
-                _ = this.benchmarkArray[i];
+                var allocated = $"{this.benchmarkArray[i]}";
+                _ = allocated;
             }
         }
 
@@ -41,14 +41,19 @@ namespace Benchmarking
         {
             foreach (var item in this.benchmarkArray)
             {
-                _ = item;
+                var allocated = $"{item}";
+                _ = allocated;
             }
         }
 
         [Benchmark]
         public void ArrayForEach()
         {
-            Array.ForEach(this.benchmarkArray, item => _ = item);
+            Array.ForEach(this.benchmarkArray, item =>
+            {
+                var allocated = $"{item}";
+                _ = allocated;
+            });
         }
 
         [Benchmark]
@@ -58,7 +63,8 @@ namespace Benchmarking
 
             while (enumerator.MoveNext())
             {
-                _ = enumerator.Current;
+                var allocated = $"{enumerator.Current}";
+                _ = allocated;
             }
         }
 
@@ -69,7 +75,8 @@ namespace Benchmarking
 
             for (var i = 0; i < this.N; i++)
             {
-                _ = span[i];
+                var allocated = $"{span[i]}";
+                _ = allocated;
             }
         }
 
@@ -80,7 +87,8 @@ namespace Benchmarking
 
             foreach (var item in span)
             {
-                _ = item;
+                var allocated = $"{item}";
+                _ = allocated;
             }
         }
     }
