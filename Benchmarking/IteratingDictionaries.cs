@@ -10,11 +10,10 @@ namespace Benchmarking
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    [SimpleJob(RuntimeMoniker.Net48)]
     [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingDictionaries
     {
-        [Params(100, 1000, 10000)]
+        [Params(100, 10000)]
         public int N;
 
         private readonly Dictionary<Guid, string> items = new Dictionary<Guid, string>();
@@ -32,70 +31,79 @@ namespace Benchmarking
             Console.WriteLine("Finish GlobalSetup");
         }
 
-        #region For
-
         [Benchmark]
-        public int ForArrayMethod()
+        public void ForEachKeyValuePair()
         {
-            var i = 0;
-
-            var items = this.items.Values.ToArray();
-
-            for (var a = 0; a < items.Length - 1; a++)
+            foreach (var entry in this.items)
             {
-                i++;
+                if (entry.Key != Guid.Empty && entry.Value == "StringValue")
+                {
+                    Console.WriteLine(entry.Key + " : " + entry.Value);
+                }
             }
-
-            return i;
-        }
-
-        #endregion For
-
-        #region ForEach
-
-        [Benchmark(Baseline = true)]
-        public int ForEachBaselineMethod()
-        {
-            var i = 0;
-
-            foreach (var one in this.items.Values)
-            {
-                i++;
-            }
-
-            return i;
         }
 
         [Benchmark]
-        public int ForEachMethod()
+        public void ForEachKey()
         {
-            var i = 0;
-
-            var items = this.items.Values;
-
-            foreach (var one in items)
+            foreach (var key in this.items.Keys)
             {
-                i++;
+                if (key != Guid.Empty && this.items[key] == "StringValue")
+                {
+                    Console.WriteLine(key + " : " + this.items[key]);
+                }
             }
-
-            return i;
         }
 
         [Benchmark]
-        public int ForEachArrayMethod()
+        public void ForEachTuple()
         {
-            var i = 0;
-
-            var items = this.items.Values.ToArray();
-
-            foreach (var one in items)
+            foreach (var (key, value) in this.items)
             {
-                i++;
+                if (key != Guid.Empty && value == "StringValue")
+                {
+                    Console.WriteLine(key + " : " + value);
+                }
             }
-
-            return i;
         }
 
-        #endregion ForEach
+        [Benchmark]
+        public void ForEachKeyValue()
+        {
+            foreach ((var key, var value) in this.items)
+            {
+                if (key != Guid.Empty && value == "StringValue")
+                {
+                    Console.WriteLine(key + " : " + value);
+                }
+            }
+        }
+
+        [Benchmark]
+        public void ForKeyValuePair()
+        {
+            for (var i = 0; i < this.items.Count; i++)
+            {
+                var entry = this.items.ElementAt(i);
+
+                if (entry.Key != Guid.Empty && entry.Value == "StringValue")
+                {
+                    Console.WriteLine(entry.Key + " : " + entry.Value);
+                }
+            }
+        }
+
+        [Benchmark]
+        public void ParallelForKeyValuePair()
+        {
+            this.items.AsParallel()
+                .ForAll(entry =>
+                {
+                    if (entry.Key != Guid.Empty && entry.Value == "StringValue")
+                    {
+                        Console.WriteLine(entry.Key + " : " + entry.Value);
+                    }
+                });
+        }
     }
 }
