@@ -33,7 +33,7 @@ namespace Benchmarking
             {
                 var allocated = $"{this.benchmarkArray[i]}";
 
-                if (allocated == string.Empty)
+                if (allocated == "NotEquals")
                 {
                     Console.WriteLine(allocated);
                 };
@@ -47,7 +47,7 @@ namespace Benchmarking
             {
                 var allocated = $"{item}";
 
-                if (allocated == string.Empty)
+                if (allocated == "NotEquals")
                 {
                     Console.WriteLine(allocated);
                 };
@@ -61,7 +61,7 @@ namespace Benchmarking
             {
                 var allocated = $"{item}";
 
-                if (allocated == string.Empty)
+                if (allocated == "NotEquals")
                 {
                     Console.WriteLine(allocated);
                 };
@@ -77,7 +77,7 @@ namespace Benchmarking
             {
                 var allocated = $"{enumerator.Current}";
 
-                if (allocated == string.Empty)
+                if (allocated == "NotEquals")
                 {
                     Console.WriteLine(allocated);
                 };
@@ -93,7 +93,7 @@ namespace Benchmarking
             {
                 var allocated = $"{span[i]}";
 
-                if (allocated == string.Empty)
+                if (allocated == "NotEquals")
                 {
                     Console.WriteLine(allocated);
                 };
@@ -109,7 +109,7 @@ namespace Benchmarking
             {
                 var allocated = $"{item}";
 
-                if (allocated == string.Empty)
+                if (allocated == "NotEquals")
                 {
                     Console.WriteLine(allocated);
                 };
