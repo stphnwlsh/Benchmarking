@@ -8,7 +8,7 @@ on:
     branches: [master]
 
 env:
-  DOTNET_VERSION: "6.0.x"
+  DOTNET_VERSION: "7.0.x"
 
 jobs:
   build:
@@ -30,4 +30,4 @@ jobs:
         run: dotnet build -c Release --no-restore
 
       - name: Benchmark
-        run: dotnet run -c Release --no-build --framework net6.0 --project ./Benchmarking/Benchmarking.csproj
+        run: dotnet run -c Release --no-build --framework net7.0 --project ./Benchmarking/Benchmarking.csproj
