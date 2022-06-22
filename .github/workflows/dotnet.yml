@@ -8,19 +8,20 @@ on:
     branches: [master]
 
 env:
-  DOTNET_VERSION: "6.0.x"
+  DOTNET_VERSION: "7.0.x"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v2
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+          include-prerelease: true
 
       - name: Restore
         run: dotnet restore
@@ -29,4 +30,4 @@ jobs:
         run: dotnet build -c Release --no-restore
 
       - name: Benchmark
-        run: dotnet run -c Release --no-build --framework net6.0 --project ./Benchmarking/Benchmarking.csproj
+        run: dotnet run -c Release --no-build --framework net7.0 --project ./Benchmarking/Benchmarking.csproj
