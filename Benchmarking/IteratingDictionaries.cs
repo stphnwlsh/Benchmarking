@@ -54,29 +54,29 @@ namespace Benchmarking
             }
         }
 
-        [Benchmark]
-        public void ForEachTuple()
-        {
-            foreach (var (key, value) in this.items)
-            {
-                if (key != Guid.Empty && value == "StringValue")
-                {
-                    Console.WriteLine(key + " : " + value);
-                }
-            }
-        }
+        // [Benchmark]
+        // public void ForEachTuple()
+        // {
+        //     foreach (var (key, value) in this.items)
+        //     {
+        //         if (key != Guid.Empty && value == "StringValue")
+        //         {
+        //             Console.WriteLine(key + " : " + value);
+        //         }
+        //     }
+        // }
 
-        [Benchmark]
-        public void ForEachKeyValue()
-        {
-            foreach ((var key, var value) in this.items)
-            {
-                if (key != Guid.Empty && value == "StringValue")
-                {
-                    Console.WriteLine(key + " : " + value);
-                }
-            }
-        }
+        // [Benchmark]
+        // public void ForEachKeyValue()
+        // {
+        //     foreach ((var key, var value) in this.items)
+        //     {
+        //         if (key != Guid.Empty && value == "StringValue")
+        //         {
+        //             Console.WriteLine(key + " : " + value);
+        //         }
+        //     }
+        // }
 
         [Benchmark]
         public void ForKeyValuePair()
