@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -30,4 +30,4 @@ jobs:
         run: dotnet build -c Release --no-restore
 
       - name: Benchmark
-        run: dotnet run -c Release --no-build --framework net48 --project ./Benchmarking/Benchmarking.csproj
+        run: dotnet run -c Release --no-build --framework net6.0 --project ./Benchmarking/Benchmarking.csproj
