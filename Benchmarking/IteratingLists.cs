@@ -84,36 +84,36 @@ namespace Benchmarking
             }
         }
 
-        // [Benchmark]
-        // public void SpanFor()
-        // {
-        //     var span = CollectionsMarshal.AsSpan(this.benchmarkList);
+        [Benchmark]
+        public void SpanFor()
+        {
+            var span = CollectionsMarshal.AsSpan(this.benchmarkList);
 
-        //     for (var i = 0; i < this.N; i++)
-        //     {
-        //         var allocated = $"{span[i]}";
+            for (var i = 0; i < this.N; i++)
+            {
+                var allocated = $"{span[i]}";
 
-        //         if (allocated == "NotEquals")
-        //         {
-        //             Console.WriteLine(allocated);
-        //         };
-        //     }
-        // }
+                if (allocated == "NotEquals")
+                {
+                    Console.WriteLine(allocated);
+                };
+            }
+        }
 
-        // [Benchmark]
-        // public void SpanForEach()
-        // {
-        //     var span = CollectionsMarshal.AsSpan(this.benchmarkList);
+        [Benchmark]
+        public void SpanForEach()
+        {
+            var span = CollectionsMarshal.AsSpan(this.benchmarkList);
 
-        //     foreach (var item in span)
-        //     {
-        //         var allocated = $"{item}";
+            foreach (var item in span)
+            {
+                var allocated = $"{item}";
 
-        //         if (allocated == "NotEquals")
-        //         {
-        //             Console.WriteLine(allocated);
-        //         };
-        //     }
-        // }
+                if (allocated == "NotEquals")
+                {
+                    Console.WriteLine(allocated);
+                };
+            }
+        }
     }
 }
