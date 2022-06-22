@@ -9,7 +9,7 @@ namespace Benchmarking
     using System.Threading.Tasks;
     using ApiDefinitions;
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Jobs;
+    using BenchmarkDotNet.Diagnosers;
     using Flurl;
     using Flurl.Http;
     using Refit;
@@ -18,7 +18,6 @@ namespace Benchmarking
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingHttpClientsGet : IDisposable
     {
         [Params(50)]

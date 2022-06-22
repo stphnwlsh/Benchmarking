@@ -4,14 +4,12 @@ namespace Benchmarking
     using System.Collections.Generic;
     using System.Linq;
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Jobs;
+    using BenchmarkDotNet.Diagnosers;
 
     [RankColumn]
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    [SimpleJob(RuntimeMoniker.Net48)]
-    [SimpleJob(RuntimeMoniker.Net60)]
     public class IteratingNestedDictionaries
     {
         [Params(10, 50)]

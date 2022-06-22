@@ -5,7 +5,6 @@ namespace Benchmarking
     using System.Runtime.InteropServices;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
-    using BenchmarkDotNet.Jobs;
 
     [RankColumn]
     [MemoryDiagnoser]
