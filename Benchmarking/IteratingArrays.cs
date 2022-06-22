@@ -32,7 +32,11 @@ namespace Benchmarking
             for (var i = 0; i < this.N; i++)
             {
                 var allocated = $"{this.benchmarkArray[i]}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
 
@@ -42,7 +46,11 @@ namespace Benchmarking
             foreach (var item in this.benchmarkArray)
             {
                 var allocated = $"{item}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
 
@@ -52,7 +60,11 @@ namespace Benchmarking
             Array.ForEach(this.benchmarkArray, item =>
             {
                 var allocated = $"{item}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             });
         }
 
@@ -64,7 +76,11 @@ namespace Benchmarking
             while (enumerator.MoveNext())
             {
                 var allocated = $"{enumerator.Current}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
 
@@ -76,7 +92,11 @@ namespace Benchmarking
             for (var i = 0; i < this.N; i++)
             {
                 var allocated = $"{span[i]}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
 
@@ -88,7 +108,11 @@ namespace Benchmarking
             foreach (var item in span)
             {
                 var allocated = $"{item}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
     }

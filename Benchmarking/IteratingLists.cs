@@ -1,9 +1,11 @@
 namespace Benchmarking
 {
+    using System;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
+    using BenchmarkDotNet.Jobs;
 
     [RankColumn]
     [MemoryDiagnoser]
@@ -31,7 +33,11 @@ namespace Benchmarking
             for (var i = 0; i < this.N; i++)
             {
                 var allocated = $"{this.benchmarkList[i]}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
 
@@ -41,14 +47,26 @@ namespace Benchmarking
             foreach (var item in this.benchmarkList)
             {
                 var allocated = $"{item}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
 
         [Benchmark]
         public void ForEachLinq()
         {
-            this.benchmarkList.ForEach(item => _ = item);
+            this.benchmarkList.ForEach(item =>
+            {
+                var allocated = $"{item}";
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
+            });
         }
 
         [Benchmark]
@@ -59,7 +77,11 @@ namespace Benchmarking
             while (enumerator.MoveNext())
             {
                 var allocated = $"{enumerator.Current}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
 
@@ -71,7 +93,11 @@ namespace Benchmarking
             for (var i = 0; i < this.N; i++)
             {
                 var allocated = $"{span[i]}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
 
@@ -83,7 +109,11 @@ namespace Benchmarking
             foreach (var item in span)
             {
                 var allocated = $"{item}";
-                _ = allocated;
+
+                if (allocated == string.Empty)
+                {
+                    Console.WriteLine(allocated);
+                };
             }
         }
     }
