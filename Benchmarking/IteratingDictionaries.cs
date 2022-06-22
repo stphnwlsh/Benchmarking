@@ -15,7 +15,7 @@ namespace Benchmarking
         [Params(100, 10000)]
         public int N;
 
-        private readonly Dictionary<Guid, string> items = new Dictionary<Guid, string>();
+        private readonly Dictionary<Guid, string> dictionary = new Dictionary<Guid, string>();
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -24,7 +24,7 @@ namespace Benchmarking
 
             for (var a = 0; a <= this.N; a++)
             {
-                this.items.Add(Guid.NewGuid(), $"StringValue{a}");
+                this.dictionary.Add(Guid.NewGuid(), $"StringValue{a}");
             }
 
             Console.WriteLine("Finish GlobalSetup");
@@ -33,7 +33,9 @@ namespace Benchmarking
         [Benchmark]
         public void ForEachKeyValuePair()
         {
-            foreach (var entry in this.items)
+            var benchmarkDictionary = this.dictionary;
+
+            foreach (var entry in benchmarkDictionary)
             {
                 if (entry.Key != Guid.Empty && entry.Value == "StringValue")
                 {
@@ -45,11 +47,13 @@ namespace Benchmarking
         [Benchmark]
         public void ForEachKey()
         {
-            foreach (var key in this.items.Keys)
+            var benchmarkDictionary = this.dictionary;
+
+            foreach (var key in benchmarkDictionary.Keys)
             {
-                if (key != Guid.Empty && this.items[key] == "StringValue")
+                if (key != Guid.Empty && benchmarkDictionary[key] == "StringValue")
                 {
-                    Console.WriteLine(key + " : " + this.items[key]);
+                    Console.WriteLine(key + " : " + benchmarkDictionary[key]);
                 }
             }
         }
@@ -57,7 +61,9 @@ namespace Benchmarking
         [Benchmark]
         public void ForEachTuple()
         {
-            foreach (var (key, value) in this.items)
+            var benchmarkDictionary = this.dictionary;
+
+            foreach (var (key, value) in benchmarkDictionary)
             {
                 if (key != Guid.Empty && value == "StringValue")
                 {
@@ -69,7 +75,9 @@ namespace Benchmarking
         [Benchmark]
         public void ForEachKeyValue()
         {
-            foreach ((var key, var value) in this.items)
+            var benchmarkDictionary = this.dictionary;
+
+            foreach ((var key, var value) in benchmarkDictionary)
             {
                 if (key != Guid.Empty && value == "StringValue")
                 {
@@ -81,9 +89,12 @@ namespace Benchmarking
         [Benchmark]
         public void ForKeyValuePair()
         {
-            for (var i = 0; i < this.items.Count; i++)
+            var benchmarkDictionary = this.dictionary;
+            var length = benchmarkDictionary.Count;
+
+            for (var i = 0; i < length; i++)
             {
-                var entry = this.items.ElementAt(i);
+                var entry = benchmarkDictionary.ElementAt(i);
 
                 if (entry.Key != Guid.Empty && entry.Value == "StringValue")
                 {
@@ -95,7 +106,9 @@ namespace Benchmarking
         [Benchmark]
         public void ParallelForKeyValuePair()
         {
-            this.items.AsParallel()
+            var benchmarkDictionary = this.dictionary;
+
+            benchmarkDictionary.AsParallel()
                 .ForAll(entry =>
                 {
                     if (entry.Key != Guid.Empty && entry.Value == "StringValue")
