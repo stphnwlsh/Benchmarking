@@ -29,7 +29,7 @@ namespace Benchmarking.Any.List
             }
 
             // Set Single Match
-            this.list[this.N / 10 * 9] = 100;
+            this.list[this.N / 10] = 100;
         }
 
         [Benchmark]
