@@ -1,4 +1,4 @@
-namespace Benchmarking.Any
+namespace Benchmarking.Any.Array
 {
     using System;
     using System.Linq;
@@ -9,7 +9,7 @@ namespace Benchmarking.Any
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    public class SingleMatchArrayEarlyIndexAny
+    public class NoMatchArrayAny
     {
         [Params(100, 10000)]
         public int N;
@@ -29,9 +29,6 @@ namespace Benchmarking.Any
             {
                 this.array[i] = random.Next(0, 99);
             }
-
-            // Set Single Match
-            this.array[this.N / 10] = 100;
         }
 
         [Benchmark]

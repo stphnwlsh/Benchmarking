@@ -1,4 +1,4 @@
-namespace Benchmarking.Any
+namespace Benchmarking.Any.Array
 {
     using System;
     using System.Linq;
