@@ -3,8 +3,6 @@ namespace Benchmarking
     using System;
     using BenchmarkDotNet.Running;
     using Benchmarking.Any.Array;
-    using Benchmarking.Any.List;
-    using Benchmarking.Any.ListObject;
     using Serilog;
 
     internal class Program
@@ -24,17 +22,19 @@ namespace Benchmarking
             // _ = BenchmarkRunner.Run<SingleMatchArrayEarlyIndexAny>();
             // _ = BenchmarkRunner.Run<SingleMatchArrayLateIndexAny>();
 
-            _ = BenchmarkRunner.Run<RandomMatchListAny>();
-            _ = BenchmarkRunner.Run<AllMatchListAny>();
-            _ = BenchmarkRunner.Run<NoMatchListAny>();
-            _ = BenchmarkRunner.Run<SingleMatchListEarlyIndexAny>();
-            _ = BenchmarkRunner.Run<SingleMatchListLateIndexAny>();
+            _ = BenchmarkRunner.Run<SingleMatchArrayPercentIndexAny>();
 
-            _ = BenchmarkRunner.Run<RandomMatchListObjectAny>();
-            _ = BenchmarkRunner.Run<AllMatchListObjectAny>();
-            _ = BenchmarkRunner.Run<NoMatchListObjectAny>();
-            _ = BenchmarkRunner.Run<SingleMatchListObjectEarlyIndexAny>();
-            _ = BenchmarkRunner.Run<SingleMatchListObjectLateIndexAny>();
+            // _ = BenchmarkRunner.Run<RandomMatchListAny>();
+            // _ = BenchmarkRunner.Run<AllMatchListAny>();
+            // _ = BenchmarkRunner.Run<NoMatchListAny>();
+            // _ = BenchmarkRunner.Run<SingleMatchListEarlyIndexAny>();
+            // _ = BenchmarkRunner.Run<SingleMatchListLateIndexAny>();
+
+            // _ = BenchmarkRunner.Run<RandomMatchListObjectAny>();
+            // _ = BenchmarkRunner.Run<AllMatchListObjectAny>();
+            // _ = BenchmarkRunner.Run<NoMatchListObjectAny>();
+            // _ = BenchmarkRunner.Run<SingleMatchListObjectEarlyIndexAny>();
+            // _ = BenchmarkRunner.Run<SingleMatchListObjectLateIndexAny>();
 
             //_ = BenchmarkRunner.Run<IteratingArrayFors>();
             //_ = BenchmarkRunner.Run<IteratingArrays>();
