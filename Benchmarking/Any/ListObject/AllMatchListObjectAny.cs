@@ -14,7 +14,7 @@ namespace Benchmarking.Any.ListObject
         [Params(100, 10000)]
         public int N;
 
-        private List<Test> list;
+        private List<Test> list = new List<Test>();
 
         [GlobalSetup]
         public void Setup()

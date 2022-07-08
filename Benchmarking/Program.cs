@@ -18,11 +18,11 @@ namespace Benchmarking
 
             Console.WriteLine("Start Benchmark");
 
-            _ = BenchmarkRunner.Run<RandomMatchArrayAny>();
-            _ = BenchmarkRunner.Run<AllMatchArrayAny>();
-            _ = BenchmarkRunner.Run<NoMatchArrayAny>();
-            _ = BenchmarkRunner.Run<SingleMatchArrayEarlyIndexAny>();
-            _ = BenchmarkRunner.Run<SingleMatchArrayLateIndexAny>();
+            // _ = BenchmarkRunner.Run<RandomMatchArrayAny>();
+            // _ = BenchmarkRunner.Run<AllMatchArrayAny>();
+            // _ = BenchmarkRunner.Run<NoMatchArrayAny>();
+            // _ = BenchmarkRunner.Run<SingleMatchArrayEarlyIndexAny>();
+            // _ = BenchmarkRunner.Run<SingleMatchArrayLateIndexAny>();
 
             _ = BenchmarkRunner.Run<RandomMatchListAny>();
             _ = BenchmarkRunner.Run<AllMatchListAny>();

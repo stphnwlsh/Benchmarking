@@ -15,7 +15,7 @@ namespace Benchmarking.Any.List
         [Params(100, 10000)]
         public int N;
 
-        private List<int> list;
+        private List<int> list = new List<int>();
 
         [GlobalSetup]
         public void Setup()
