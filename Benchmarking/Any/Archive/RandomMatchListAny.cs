@@ -1,4 +1,4 @@
-namespace Benchmarking.Any.ListObject
+namespace Benchmarking.Any.List
 {
     using System;
     using System.Collections.Generic;
@@ -10,12 +10,12 @@ namespace Benchmarking.Any.ListObject
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    public class RandomMatchListObjectAny
+    public class RandomMatchListAny
     {
-        [Params(100, 10000)]
+        [Params(10000)]
         public int N;
 
-        private List<Test> list = new List<Test>();
+        private List<int> list = new List<int>();
 
         [GlobalSetup]
         public void Setup()
@@ -25,11 +25,8 @@ namespace Benchmarking.Any.ListObject
             // Fill List with Random Numbers (0-99)
             for (var i = 0; i < this.N; i++)
             {
-                this.list.Add(new Test($"{random.Next(0, 99)}"));
+                this.list.Add(random.Next(0, 99));
             }
-
-            // Insert Test Value for Comparison at Random Index
-            this.list[random.Next(0, this.N)] = new Test("100");
         }
 
         [Benchmark]
@@ -37,7 +34,7 @@ namespace Benchmarking.Any.ListObject
         {
             var benchmarkList = this.list;
 
-            _ = benchmarkList.Where(item => item.Value == "100").Any();
+            _ = benchmarkList.Where(item => item > 49).Any();
         }
 
         [Benchmark]
@@ -45,7 +42,7 @@ namespace Benchmarking.Any.ListObject
         {
             var benchmarkList = this.list;
 
-            _ = benchmarkList.Where(item => item.Value == "100").Count() > 0;
+            _ = benchmarkList.Where(item => item > 49).Count() > 0;
         }
 
         [Benchmark]
@@ -53,7 +50,7 @@ namespace Benchmarking.Any.ListObject
         {
             var benchmarkList = this.list;
 
-            _ = benchmarkList.Any(item => item.Value == "100");
+            _ = benchmarkList.Any(item => item > 49);
         }
 
         [Benchmark]
@@ -61,7 +58,7 @@ namespace Benchmarking.Any.ListObject
         {
             var benchmarkList = this.list;
 
-            _ = benchmarkList.Count(item => item.Value == "100") > 0;
+            _ = benchmarkList.Count(item => item > 49) > 0;
         }
     }
 }

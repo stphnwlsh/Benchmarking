@@ -9,9 +9,9 @@ namespace Benchmarking.Any.Array
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    public class NoMatchArrayAny
+    public class SingleMatchArrayLateIndexAny
     {
-        [Params(100, 10000)]
+        [Params(10000)]
         public int N;
 
         private int[] array;
@@ -29,6 +29,9 @@ namespace Benchmarking.Any.Array
             {
                 this.array[i] = random.Next(0, 99);
             }
+
+            // Set Single Match
+            this.array[this.N / 10 * 9] = 100;
         }
 
         [Benchmark]

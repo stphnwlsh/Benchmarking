@@ -3,6 +3,7 @@ namespace Benchmarking
     using System;
     using BenchmarkDotNet.Running;
     using Benchmarking.Any.Array;
+    using Benchmarking.Any.List;
     using Serilog;
 
     internal class Program
@@ -16,25 +17,21 @@ namespace Benchmarking
 
             Console.WriteLine("Start Benchmark");
 
-            // _ = BenchmarkRunner.Run<RandomMatchArrayAny>();
-            // _ = BenchmarkRunner.Run<AllMatchArrayAny>();
-            // _ = BenchmarkRunner.Run<NoMatchArrayAny>();
-            // _ = BenchmarkRunner.Run<SingleMatchArrayEarlyIndexAny>();
-            // _ = BenchmarkRunner.Run<SingleMatchArrayLateIndexAny>();
+            _ = BenchmarkRunner.Run<FivePercentArray>();
+            _ = BenchmarkRunner.Run<TenPercentArray>();
+            _ = BenchmarkRunner.Run<TwentyFivePercentArray>();
+            _ = BenchmarkRunner.Run<FiftyPercentArray>();
+            _ = BenchmarkRunner.Run<SeventyFivePercentArray>();
+            _ = BenchmarkRunner.Run<NinetyFivePercentArray>();
+            _ = BenchmarkRunner.Run<NinetyFivePercentArray>();
 
-            _ = BenchmarkRunner.Run<SingleMatchArrayPercentIndexAny>();
-
-            // _ = BenchmarkRunner.Run<RandomMatchListAny>();
-            // _ = BenchmarkRunner.Run<AllMatchListAny>();
-            // _ = BenchmarkRunner.Run<NoMatchListAny>();
-            // _ = BenchmarkRunner.Run<SingleMatchListEarlyIndexAny>();
-            // _ = BenchmarkRunner.Run<SingleMatchListLateIndexAny>();
-
-            // _ = BenchmarkRunner.Run<RandomMatchListObjectAny>();
-            // _ = BenchmarkRunner.Run<AllMatchListObjectAny>();
-            // _ = BenchmarkRunner.Run<NoMatchListObjectAny>();
-            // _ = BenchmarkRunner.Run<SingleMatchListObjectEarlyIndexAny>();
-            // _ = BenchmarkRunner.Run<SingleMatchListObjectLateIndexAny>();
+            // _ = BenchmarkRunner.Run<FivePercentList>();
+            // _ = BenchmarkRunner.Run<TenPercentList>();
+            // _ = BenchmarkRunner.Run<TwentyFivePercentList>();
+            // _ = BenchmarkRunner.Run<FiftyPercentList>();
+            // _ = BenchmarkRunner.Run<SeventyFivePercentList>();
+            // _ = BenchmarkRunner.Run<NinetyFivePercentList>();
+            // _ = BenchmarkRunner.Run<NinetyFivePercentList>();
 
             //_ = BenchmarkRunner.Run<IteratingArrayFors>();
             //_ = BenchmarkRunner.Run<IteratingArrays>();

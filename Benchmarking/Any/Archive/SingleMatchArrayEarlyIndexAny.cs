@@ -1,7 +1,6 @@
-namespace Benchmarking.Any.List
+namespace Benchmarking.Any.Array
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
@@ -10,58 +9,61 @@ namespace Benchmarking.Any.List
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    public class SingleMatchListEarlyIndexAny
+    public class SingleMatchArrayEarlyIndexAny
     {
-        [Params(100, 10000)]
+        [Params(10000)]
         public int N;
 
-        private List<int> list = new List<int>();
+        private int[] array;
 
         [GlobalSetup]
         public void Setup()
         {
+            // Initialise Array
+            this.array = new int[this.N];
+
             var random = new Random();
 
-            // Fill List with Random Numbers (0-99)
+            // Fill Array with Random Numbers (0-99)
             for (var i = 0; i < this.N; i++)
             {
-                this.list.Add(random.Next(0, 99));
+                this.array[i] = random.Next(0, 99);
             }
 
             // Set Single Match
-            this.list[this.N / 10] = 100;
+            this.array[this.N / 10] = 100;
         }
 
         [Benchmark]
         public void WhereAny()
         {
-            var benchmarkList = this.list;
+            var benchmarkArray = this.array;
 
-            _ = benchmarkList.Where(item => item > 99).Any();
+            _ = benchmarkArray.Where(item => item > 99).Any();
         }
 
         [Benchmark]
         public void WhereCount()
         {
-            var benchmarkList = this.list;
+            var benchmarkArray = this.array;
 
-            _ = benchmarkList.Where(item => item > 99).Count() > 0;
+            _ = benchmarkArray.Where(item => item > 99).Count() > 0;
         }
 
         [Benchmark]
         public void Any()
         {
-            var benchmarkList = this.list;
+            var benchmarkArray = this.array;
 
-            _ = benchmarkList.Any(item => item > 99);
+            _ = benchmarkArray.Any(item => item > 99);
         }
 
         [Benchmark]
         public void Count()
         {
-            var benchmarkList = this.list;
+            var benchmarkArray = this.array;
 
-            _ = benchmarkList.Count(item => item > 99) > 0;
+            _ = benchmarkArray.Count(item => item > 99) > 0;
         }
     }
 }

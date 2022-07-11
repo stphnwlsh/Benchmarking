@@ -11,7 +11,7 @@ namespace Benchmarking.Any.Array
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     public class SingleMatchArrayPercentIndexAny
     {
-        [Params(100, 10000)]
+        [Params(10000)]
         public int N;
 
         private int[] onePercentArray;

@@ -12,7 +12,7 @@ namespace Benchmarking.Any.List
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     public class AllMatchListAny
     {
-        [Params(100, 10000)]
+        [Params(10000)]
         public int N;
 
         private List<int> list = new List<int>();
