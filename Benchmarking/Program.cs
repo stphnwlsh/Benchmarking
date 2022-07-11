@@ -2,9 +2,9 @@ namespace Benchmarking
 {
     using System;
     using BenchmarkDotNet.Running;
-    using Benchmarking.Any.Array;
-    using Benchmarking.Any.List;
     using Serilog;
+    using Array = Any.Array;
+    using List = Any.List;
 
     internal class Program
     {
@@ -17,21 +17,11 @@ namespace Benchmarking
 
             Console.WriteLine("Start Benchmark");
 
-            _ = BenchmarkRunner.Run<FivePercentArray>();
-            _ = BenchmarkRunner.Run<TenPercentArray>();
-            _ = BenchmarkRunner.Run<TwentyFivePercentArray>();
-            _ = BenchmarkRunner.Run<FiftyPercentArray>();
-            _ = BenchmarkRunner.Run<SeventyFivePercentArray>();
-            _ = BenchmarkRunner.Run<NinetyFivePercentArray>();
-            _ = BenchmarkRunner.Run<NinetyFivePercentArray>();
+            _ = BenchmarkRunner.Run<Array.SinglePersonMatchAny>();
+            _ = BenchmarkRunner.Run<Array.ManyPersonMatchAny>();
 
-            // _ = BenchmarkRunner.Run<FivePercentList>();
-            // _ = BenchmarkRunner.Run<TenPercentList>();
-            // _ = BenchmarkRunner.Run<TwentyFivePercentList>();
-            // _ = BenchmarkRunner.Run<FiftyPercentList>();
-            // _ = BenchmarkRunner.Run<SeventyFivePercentList>();
-            // _ = BenchmarkRunner.Run<NinetyFivePercentList>();
-            // _ = BenchmarkRunner.Run<NinetyFivePercentList>();
+            _ = BenchmarkRunner.Run<List.SinglePersonMatchAny>();
+            _ = BenchmarkRunner.Run<List.ManyPersonMatchAny>();
 
             //_ = BenchmarkRunner.Run<IteratingArrayFors>();
             //_ = BenchmarkRunner.Run<IteratingArrays>();
