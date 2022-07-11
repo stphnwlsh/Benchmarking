@@ -1,67 +1,65 @@
-namespace Benchmarking.Any.List
+namespace Benchmarking.Any.Archive;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using BenchmarkDotNet.Attributes;
+
+[RankColumn]
+[MemoryDiagnoser]
+[MarkdownExporterAttribute.Default]
+[Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
+public class SingleMatchListLateIndexAny
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
+    [Params(10000)]
+    public int N;
 
-    [RankColumn]
-    [MemoryDiagnoser]
-    [MarkdownExporterAttribute.Default]
-    [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    public class SingleMatchListLateIndexAny
+    private List<int> list = new List<int>();
+
+    [GlobalSetup]
+    public void Setup()
     {
-        [Params(10000)]
-        public int N;
+        var random = new Random();
 
-        private List<int> list = new List<int>();
-
-        [GlobalSetup]
-        public void Setup()
+        // Fill List with Random Numbers (0-99)
+        for (var i = 0; i < this.N; i++)
         {
-            var random = new Random();
-
-            // Fill List with Random Numbers (0-99)
-            for (var i = 0; i < this.N; i++)
-            {
-                this.list.Add(random.Next(0, 99));
-            }
-
-            // Set Single Match
-            this.list[this.N / 10 * 9] = 100;
+            this.list.Add(random.Next(0, 99));
         }
 
-        [Benchmark]
-        public void WhereAny()
-        {
-            var benchmarkList = this.list;
+        // Set Single Match
+        this.list[this.N / 10 * 9] = 100;
+    }
 
-            _ = benchmarkList.Where(item => item > 99).Any();
-        }
+    [Benchmark]
+    public void WhereAny()
+    {
+        var benchmarkList = this.list;
 
-        [Benchmark]
-        public void WhereCount()
-        {
-            var benchmarkList = this.list;
+        _ = benchmarkList.Where(item => item > 99).Any();
+    }
 
-            _ = benchmarkList.Where(item => item > 99).Count() > 0;
-        }
+    [Benchmark]
+    public void WhereCount()
+    {
+        var benchmarkList = this.list;
 
-        [Benchmark]
-        public void Any()
-        {
-            var benchmarkList = this.list;
+        _ = benchmarkList.Where(item => item > 99).Count() > 0;
+    }
 
-            _ = benchmarkList.Any(item => item > 99);
-        }
+    [Benchmark]
+    public void Any()
+    {
+        var benchmarkList = this.list;
 
-        [Benchmark]
-        public void Count()
-        {
-            var benchmarkList = this.list;
+        _ = benchmarkList.Any(item => item > 99);
+    }
 
-            _ = benchmarkList.Count(item => item > 99) > 0;
-        }
+    [Benchmark]
+    public void Count()
+    {
+        var benchmarkList = this.list;
+
+        _ = benchmarkList.Count(item => item > 99) > 0;
     }
 }

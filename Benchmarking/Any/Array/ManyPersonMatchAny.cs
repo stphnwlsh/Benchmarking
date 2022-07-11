@@ -1,48 +1,46 @@
-namespace Benchmarking.Any.Array
+namespace Benchmarking.Any.Array;
+
+using System;
+using System.Linq;
+using BenchmarkDotNet.Attributes;
+using Models.Person;
+
+[RankColumn]
+[MemoryDiagnoser]
+public class ManyPersonMatchAny
 {
-    using System;
-    using System.Linq;
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using Benchmarking.Models;
+    [Params(10000)]
+    public int PeopleCount;
 
-    [RankColumn]
-    [MemoryDiagnoser]
-    public class ManyPersonMatchAny
+    [Params(2, 5, 10, 25, 50, 75, 90, 95, 98)]
+    public int Percentage;
+
+    private Person[] array = PersonExtensions.GetPeopleArray(10000);
+
+    [Benchmark]
+    public void WhereAny()
     {
-        [Params(10000)]
-        public int PeopleCount;
+        var benchmarkArray = this.array;
+        var bornAfter = DateTime.Now.AddYears(-this.Percentage);
 
-        [Params(2, 5, 10, 25, 50, 75, 90, 95, 98)]
-        public int Percentage;
+        _ = benchmarkArray.Where(p => p.DateOfBirth > bornAfter).Any();
+    }
 
-        private Person[] array = PersonExtensions.GetPeopleArray(10000);
+    [Benchmark]
+    public void WhereCount()
+    {
+        var benchmarkArray = this.array;
+        var bornAfter = DateTime.Now.AddYears(-this.Percentage);
 
-        [Benchmark]
-        public void WhereAny()
-        {
-            var benchmarkArray = this.array;
-            var bornAfter = DateTime.Now.AddYears(-this.Percentage);
+        _ = benchmarkArray.Where(p => p.DateOfBirth > bornAfter).Count() > 0;
+    }
 
-            _ = benchmarkArray.Where(p => p.DateOfBirth > bornAfter).Any();
-        }
+    [Benchmark]
+    public void Any()
+    {
+        var benchmarkArray = this.array;
+        var bornAfter = DateTime.Now.AddYears(-this.Percentage);
 
-        [Benchmark]
-        public void WhereCount()
-        {
-            var benchmarkArray = this.array;
-            var bornAfter = DateTime.Now.AddYears(-this.Percentage);
-
-            _ = benchmarkArray.Where(p => p.DateOfBirth > bornAfter).Count() > 0;
-        }
-
-        [Benchmark]
-        public void Any()
-        {
-            var benchmarkArray = this.array;
-            var bornAfter = DateTime.Now.AddYears(-this.Percentage);
-
-            _ = benchmarkArray.Any(p => p.DateOfBirth > bornAfter);
-        }
+        _ = benchmarkArray.Any(p => p.DateOfBirth > bornAfter);
     }
 }
