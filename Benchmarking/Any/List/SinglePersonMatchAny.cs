@@ -6,7 +6,6 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using Models.Person;
 
-[ShortRunJob]
 [RankColumn]
 [MemoryDiagnoser]
 public class SinglePersonMatchAny
