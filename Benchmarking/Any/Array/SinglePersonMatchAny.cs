@@ -6,7 +6,6 @@ namespace Benchmarking.Any.Array
     using BenchmarkDotNet.Diagnosers;
     using Benchmarking.Models;
 
-    [ShortRunJob]
     [RankColumn]
     [MemoryDiagnoser]
     public class SinglePersonMatchAny

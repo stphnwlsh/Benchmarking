@@ -7,7 +7,6 @@ namespace Benchmarking.Any.List
     using BenchmarkDotNet.Diagnosers;
     using Benchmarking.Models;
 
-    [ShortRunJob]
     [RankColumn]
     [MemoryDiagnoser]
     public class SinglePersonMatchAny
