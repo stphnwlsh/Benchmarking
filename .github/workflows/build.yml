@@ -1,0 +1,35 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and dry run
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build
+        run: dotnet build Benchmarking.slnx -c Release
+
+      # A dry run executes every benchmark once. It proves they work, not how fast they are.
+      # The Network suite is left out because it calls a real API.
+      - name: Dry run
+        run: dotnet run -c Release --no-build --project Benchmarking -- --job Dry --filter '*Iterating*' '*Random*'

@@ -1,0 +1,38 @@
+name: Benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      filter:
+        description: 'Which benchmarks to run, as a BenchmarkDotNet filter'
+        required: true
+        default: '*Lists*'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Run
+        env:
+          FILTER: ${{ inputs.filter }}
+        run: dotnet run -c Release --project Benchmarking -- --filter "$FILTER"
+
+      - name: Add the results to the summary
+        run: cat BenchmarkDotNet.Artifacts/results/*-report-github.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the results
+        uses: actions/upload-artifact@v5
+        with:
+          name: benchmark-results
+          path: BenchmarkDotNet.Artifacts/results
