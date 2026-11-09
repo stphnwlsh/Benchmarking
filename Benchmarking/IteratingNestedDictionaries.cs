@@ -11,7 +11,7 @@ namespace Benchmarking
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     public class IteratingNestedDictionaries
     {
-        [Params(10, 50, 100)]
+        [Params(10, 20, 40)]
         public int N;
 
         private Zero zero;
