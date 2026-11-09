@@ -9,27 +9,24 @@ namespace Benchmarking
     using System.Threading.Tasks;
     using ApiDefinitions;
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Jobs;
     using Flurl;
     using Flurl.Http;
     using Refit;
 
+    [BenchmarkCategory("Network")]
     [RankColumn]
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.Default]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-    [SimpleJob(RuntimeMoniker.Net60)]
     public class HttpClientsGet
     {
-        [Params(50)]
+        [Params(10)]
         public int N;
 
         private HttpClient httpClient;
         private IRefitCatsApi refitClient;
         private Url flurlClient;
         private IRestEaseCatsApi restEaseClient;
-        private dynamic dalSoftClient;
-
 
         [GlobalSetup]
         public void SetupAsync()
@@ -45,15 +42,12 @@ namespace Benchmarking
             // Setup Refit Client
             this.refitClient = RestService.For<IRefitCatsApi>("https://api.thecatapi.com");
 
-            // Setup Dalsoft Client
-            this.dalSoftClient = new DalSoft.RestClient.RestClient("https://api.thecatapi.com");
-
             // Setup Flurl Client
             this.flurlClient = "https://api.thecatapi.com"
                 .AppendPathSegment("/v1/images/search")
                 .SetQueryParams(new { q = "bengal" });
 
-            // Setup Refit Client
+            // Setup RestEase Client
             this.restEaseClient = RestEase.RestClient.For<IRestEaseCatsApi>("https://api.thecatapi.com");
         }
 
@@ -73,8 +67,6 @@ namespace Benchmarking
                 {
                     throw new InvalidOperationException($"StatusCode: {response.StatusCode} - HttpClient Error");
                 }
-
-                x++;
             }
         }
 
@@ -93,37 +85,15 @@ namespace Benchmarking
                 {
                     throw new InvalidOperationException($"StatusCode: {response.StatusCode} - Refit Error");
                 }
-
-                x++;
             }
         }
 
-        [Benchmark]
-        public async Task DalSoftClientMethod()
-        {
-            for (var x = 0; x < this.N; x++)
-            {
-                var response = await this.dalSoftClient.V1.Images.Search.Query(new { q = "bengal" }).Get();
-
-                if (((HttpResponseMessage)response).StatusCode == HttpStatusCode.OK)
-                {
-                    _ = (List<SearchResult>)response;
-                }
-                else
-                {
-                    throw new InvalidOperationException($"StatusCode: {((HttpResponseMessage)response).StatusCode} - DalSoft Error");
-                }
-
-                x++;
-            }
-        }
 
         [Benchmark]
         public async Task FlurlClientMethod()
         {
             for (var x = 0; x < this.N; x++)
             {
-                // Setup Flurl Client
                 var response = await this.flurlClient.GetAsync();
 
                 if (response.StatusCode == (int)HttpStatusCode.OK)
@@ -135,8 +105,6 @@ namespace Benchmarking
                 {
                     throw new InvalidOperationException($"StatusCode: {response.StatusCode} - Flurl Error");
                 }
-
-                x++;
             }
         }
 
@@ -153,10 +121,8 @@ namespace Benchmarking
                 }
                 else
                 {
-                    throw new InvalidOperationException($"StatusCode: {response.ResponseMessage.StatusCode} - Refit Error");
+                    throw new InvalidOperationException($"StatusCode: {response.ResponseMessage.StatusCode} - RestEase Error");
                 }
-
-                x++;
             }
         }
     }
