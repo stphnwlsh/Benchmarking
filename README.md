@@ -59,7 +59,7 @@ The **Build** workflow builds everything and does a dry run of every suite on ea
 
 Bug reports, ideas and new suites are all welcome. [CONTRIBUTING.md](CONTRIBUTING.md) explains how, and the [code of conduct](CODE_OF_CONDUCT.md) explains how to be excellent to each other. Security problems go through the [security policy](SECURITY.md), not an issue.
 
-If this settles an argument in your favour, you can [sponsor the work](https://github.com/sponsors/stphnwlsh). It also funds [Lean Mean Clean Apps](https://leanmeancleanapps.github.io), and the coffee.
+If this settles an argument in your favour, you can [sponsor the work](https://github.com/sponsors/stphnwlsh). It also funds [Lean Mean Clean Apps](https://leanmeanclean.dev), and the coffee.
 
 ## Licence
 
